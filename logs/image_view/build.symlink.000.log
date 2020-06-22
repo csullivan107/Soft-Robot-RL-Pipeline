@@ -1,0 +1,17 @@
+Symlinking /home/robertslab/rl_workspace_0/devel/include/image_view/ImageViewConfig.h
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/libimage_view.so
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/pkgconfig/image_view.pc
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/image_view/image_saver
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/image_view/extract_images
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/image_view/video_recorder
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/image_view/image_view
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/image_view/disparity_view
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/image_view/stereo_view
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/image_view/__init__.py
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/image_view/cfg/__init__.py
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/image_view/cfg/ImageViewConfig.py
+Symlinking /home/robertslab/rl_workspace_0/devel/share/image_view/docs/ImageViewConfig-usage.dox
+Symlinking /home/robertslab/rl_workspace_0/devel/share/image_view/docs/ImageViewConfig.dox
+Symlinking /home/robertslab/rl_workspace_0/devel/share/image_view/docs/ImageViewConfig.wikidoc
+Symlinking /home/robertslab/rl_workspace_0/devel/share/image_view/cmake/image_viewConfig.cmake
+Symlinking /home/robertslab/rl_workspace_0/devel/share/image_view/cmake/image_viewConfig-version.cmake

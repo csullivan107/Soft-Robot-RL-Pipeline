@@ -1,0 +1,4 @@
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/libdepth_image_proc.so
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/pkgconfig/depth_image_proc.pc
+Symlinking /home/robertslab/rl_workspace_0/devel/share/depth_image_proc/cmake/depth_image_procConfig-version.cmake
+Symlinking /home/robertslab/rl_workspace_0/devel/share/depth_image_proc/cmake/depth_image_procConfig.cmake

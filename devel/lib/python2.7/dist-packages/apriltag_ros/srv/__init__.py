@@ -1,0 +1,1 @@
+/home/robertslab/rl_workspace_0/devel/.private/apriltag_ros/lib/python2.7/dist-packages/apriltag_ros/srv/__init__.py

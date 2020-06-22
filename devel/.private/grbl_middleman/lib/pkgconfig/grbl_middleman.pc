@@ -1,0 +1,8 @@
+prefix=/home/robertslab/rl_workspace_0/devel/.private/grbl_middleman
+
+Name: grbl_middleman
+Description: Description of grbl_middleman
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

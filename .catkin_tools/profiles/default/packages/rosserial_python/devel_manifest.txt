@@ -1,0 +1,6 @@
+rosserial/rosserial_python
+/home/robertslab/rl_workspace_0/devel/.private/rosserial_python/cmake.lock /home/robertslab/rl_workspace_0/devel/./cmake.lock
+/home/robertslab/rl_workspace_0/devel/.private/rosserial_python/lib/pkgconfig/rosserial_python.pc /home/robertslab/rl_workspace_0/devel/lib/pkgconfig/rosserial_python.pc
+/home/robertslab/rl_workspace_0/devel/.private/rosserial_python/lib/python2.7/dist-packages/rosserial_python/__init__.py /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/rosserial_python/__init__.py
+/home/robertslab/rl_workspace_0/devel/.private/rosserial_python/share/rosserial_python/cmake/rosserial_pythonConfig.cmake /home/robertslab/rl_workspace_0/devel/share/rosserial_python/cmake/rosserial_pythonConfig.cmake
+/home/robertslab/rl_workspace_0/devel/.private/rosserial_python/share/rosserial_python/cmake/rosserial_pythonConfig-version.cmake /home/robertslab/rl_workspace_0/devel/share/rosserial_python/cmake/rosserial_pythonConfig-version.cmake

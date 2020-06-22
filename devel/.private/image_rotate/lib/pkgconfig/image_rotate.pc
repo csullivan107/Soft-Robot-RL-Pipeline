@@ -1,0 +1,8 @@
+prefix=/home/robertslab/rl_workspace_0/devel/.private/image_rotate
+
+Name: image_rotate
+Description: Description of image_rotate
+Version: 1.15.0
+Cflags: -I/home/robertslab/rl_workspace_0/devel/.private/image_rotate/include
+Libs: -L${prefix}/lib 
+Requires: 

@@ -1,0 +1,1 @@
+/home/robertslab/rl_workspace_0/devel/.private/stereo_image_proc/share/stereo_image_proc/cmake/stereo_image_procConfig.cmake

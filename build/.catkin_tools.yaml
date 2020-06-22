@@ -1,0 +1,6 @@
+devel_space: /home/robertslab/rl_workspace_0/devel
+install: false
+install_space: /home/robertslab/rl_workspace_0/install
+profile: default
+source_space: /home/robertslab/rl_workspace_0/src
+workspace: /home/robertslab/rl_workspace_0

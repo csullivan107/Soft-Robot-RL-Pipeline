@@ -1,0 +1,8 @@
+prefix=/home/robertslab/rl_workspace_0/devel/.private/rosserial_tivac
+
+Name: rosserial_tivac
+Description: Description of rosserial_tivac
+Version: 0.8.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

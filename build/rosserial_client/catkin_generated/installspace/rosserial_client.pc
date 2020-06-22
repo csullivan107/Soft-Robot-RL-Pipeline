@@ -1,0 +1,8 @@
+prefix=/home/robertslab/rl_workspace_0/install
+
+Name: rosserial_client
+Description: Description of rosserial_client
+Version: 0.8.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

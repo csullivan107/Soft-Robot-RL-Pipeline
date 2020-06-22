@@ -1,0 +1,9 @@
+# CMake generated Testfile for 
+# Source directory: /home/robertslab/rl_workspace_0/src/rosserial/rosserial_test
+# Build directory: /home/robertslab/rl_workspace_0/build/rosserial_test
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+add_test(_ctest_rosserial_test_rostest_test_rosserial_server_socket.test "/home/robertslab/rl_workspace_0/build/rosserial_test/catkin_generated/env_cached.sh" "/usr/bin/python2" "/opt/ros/melodic/share/catkin/cmake/test/run_tests.py" "/home/robertslab/rl_workspace_0/build/rosserial_test/test_results/rosserial_test/rostest-test_rosserial_server_socket.xml" "--return-code" "/usr/bin/python2 /opt/ros/melodic/share/rostest/cmake/../../../bin/rostest --pkgdir=/home/robertslab/rl_workspace_0/src/rosserial/rosserial_test --package=rosserial_test --results-filename test_rosserial_server_socket.xml --results-base-dir \"/home/robertslab/rl_workspace_0/build/rosserial_test/test_results\" /home/robertslab/rl_workspace_0/src/rosserial/rosserial_test/test/rosserial_server_socket.test ")
+add_test(_ctest_rosserial_test_rostest_test_rosserial_server_serial.test "/home/robertslab/rl_workspace_0/build/rosserial_test/catkin_generated/env_cached.sh" "/usr/bin/python2" "/opt/ros/melodic/share/catkin/cmake/test/run_tests.py" "/home/robertslab/rl_workspace_0/build/rosserial_test/test_results/rosserial_test/rostest-test_rosserial_server_serial.xml" "--return-code" "/usr/bin/python2 /opt/ros/melodic/share/rostest/cmake/../../../bin/rostest --pkgdir=/home/robertslab/rl_workspace_0/src/rosserial/rosserial_test --package=rosserial_test --results-filename test_rosserial_server_serial.xml --results-base-dir \"/home/robertslab/rl_workspace_0/build/rosserial_test/test_results\" /home/robertslab/rl_workspace_0/src/rosserial/rosserial_test/test/rosserial_server_serial.test ")
+subdirs("gtest")

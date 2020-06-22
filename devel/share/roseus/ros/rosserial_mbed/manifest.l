@@ -1,0 +1,1 @@
+/home/robertslab/rl_workspace_0/devel/.private/rosserial_mbed/share/roseus/ros/rosserial_mbed/manifest.l

@@ -1,0 +1,8 @@
+prefix=/home/robertslab/rl_workspace_0/install
+
+Name: image_rotate
+Description: Description of image_rotate
+Version: 1.15.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 
