@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 import rospy,serial,time
 from std_msgs.msg import String
 
