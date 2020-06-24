@@ -1,14 +1,22 @@
-
-import rospy,serial,time
+#!/usr/bin/env python
+import rospy,serial,time, sys
 from std_msgs.msg import String
 
-grblArduino = serial.Serial('/dev/ttyACM0', 115200, timeout=.1)
+
+print(sys.version)
+
+grblArduino = serial.Serial('/dev/ttyACM0', 115200, timeout=.1, exclusive=0)
+
+print("serial information: ")
+print("\t" + grblArduino.name)
 
 #call back is called anytime the subscriber gets data from the topic
 def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
-    str2send = data.data
-    grblArduino.write(str2send.encode())
+    #str2send = String()
+    str2send = data.data + '\n'
+    rospy.loginfo(rospy.get_caller_id() + "I heard '%s' and am sending '%s'", data.data, str2send)
+    
+    grblArduino.write(str2send)
     
 def grbl_forward():
 
