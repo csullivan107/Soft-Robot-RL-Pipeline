@@ -1,5 +1,0 @@
-Symlinking /home/robertslab/rl_workspace_0/devel/lib/libusb_cam.so
-Symlinking /home/robertslab/rl_workspace_0/devel/lib/pkgconfig/usb_cam.pc
-Symlinking /home/robertslab/rl_workspace_0/devel/lib/usb_cam/usb_cam_node
-Symlinking /home/robertslab/rl_workspace_0/devel/share/usb_cam/cmake/usb_camConfig-version.cmake
-Symlinking /home/robertslab/rl_workspace_0/devel/share/usb_cam/cmake/usb_camConfig.cmake
