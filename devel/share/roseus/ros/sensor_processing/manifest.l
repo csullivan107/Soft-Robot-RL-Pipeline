@@ -1,0 +1,1 @@
+/home/robertslab/rl_workspace_0/devel/.private/sensor_processing/share/roseus/ros/sensor_processing/manifest.l

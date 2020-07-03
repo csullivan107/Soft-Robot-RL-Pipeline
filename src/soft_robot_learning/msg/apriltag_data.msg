@@ -1,0 +1,2 @@
+float32 x_pos_gnd
+float32 y_pos_gnd

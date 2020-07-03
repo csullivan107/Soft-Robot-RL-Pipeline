@@ -1,0 +1,2 @@
+float32 x_percentage
+float32 y_percentage

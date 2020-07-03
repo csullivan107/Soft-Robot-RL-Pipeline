@@ -1,0 +1,8 @@
+prefix=/home/robertslab/rl_workspace_0/install
+
+Name: soft_robot_learning
+Description: Description of soft_robot_learning
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: rospy std_msgs message_runtime

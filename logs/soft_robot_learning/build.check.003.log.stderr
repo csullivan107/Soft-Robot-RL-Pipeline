@@ -1,0 +1,13 @@
+[31m[1mCMake Error[0m at /home/robertslab/rl_workspace_0/build/soft_robot_learning/cmake/soft_robot_learning-genmsg.cmake:3 (message):
+  Could not find messages which
+  '/home/robertslab/rl_workspace_0/src/soft_robot_learning/msg/gcode_packager.msg'
+  depends on.  Did you forget to specify generate_messages(DEPENDENCIES ...)?
+
+  Cannot locate message [floar32] in package [soft_robot_learning] with paths
+  [['/home/robertslab/rl_workspace_0/src/soft_robot_learning/msg']]
+[36mCall Stack (most recent call first):[0m
+  /opt/ros/melodic/share/genmsg/cmake/genmsg-extras.cmake:307 (include)
+  CMakeLists.txt:72 (generate_messages)
+
+
+make: *** [cmake_check_build_system] Error 1

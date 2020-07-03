@@ -1,0 +1,34 @@
+[36m--[0m Using CATKIN_DEVEL_PREFIX: /home/robertslab/rl_workspace_0/devel/.private/soft_robot_learning
+[36m--[0m Using CMAKE_PREFIX_PATH: /home/robertslab/rl_workspace_0/devel;/opt/ros/melodic
+[36m--[0m This workspace overlays: /home/robertslab/rl_workspace_0/devel;/opt/ros/melodic
+[36m--[0m Found PythonInterp: /usr/bin/python2 (found suitable version "2.7.17", minimum required is "2")
+[36m--[0m Using PYTHON_EXECUTABLE: /usr/bin/python2
+[36m--[0m Using Debian Python package layout
+[36m--[0m Using empy: /usr/bin/empy
+[36m--[0m Using CATKIN_ENABLE_TESTING: ON
+[36m--[0m Call enable_testing()
+[36m--[0m Using CATKIN_TEST_RESULTS_DIR: /home/robertslab/rl_workspace_0/build/soft_robot_learning/test_results
+[36m--[0m Found gtest sources under '/usr/src/googletest': gtests will be built
+[36m--[0m Found gmock sources under '/usr/src/googletest': gmock will be built
+[36m--[0m Found PythonInterp: /usr/bin/python2 (found version "2.7.17")
+[36m--[0m Using Python nosetests: /usr/bin/nosetests-2.7
+[36m--[0m catkin 0.7.26
+[36m--[0m BUILD_SHARED_LIBS is on
+[36m--[0m Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+[31m[1mCMake Error[0m at /home/robertslab/rl_workspace_0/build/soft_robot_learning/cmake/soft_robot_learning-genmsg.cmake:3 (message):
+  Could not find messages which
+  '/home/robertslab/rl_workspace_0/src/soft_robot_learning/msg/gcode_packager.msg'
+  depends on.  Did you forget to specify generate_messages(DEPENDENCIES ...)?
+
+  Cannot locate message [floar32] in package [soft_robot_learning] with paths
+  [['/home/robertslab/rl_workspace_0/src/soft_robot_learning/msg']]
+[36mCall Stack (most recent call first):[0m
+  /opt/ros/melodic/share/genmsg/cmake/genmsg-extras.cmake:307 (include)
+  CMakeLists.txt:72 (generate_messages)
+
+
+[36m--[0m Configuring incomplete, errors occurred!
+See also "/home/robertslab/rl_workspace_0/build/soft_robot_learning/CMakeFiles/CMakeOutput.log".
+See also "/home/robertslab/rl_workspace_0/build/soft_robot_learning/CMakeFiles/CMakeError.log".
+Makefile:390: recipe for target 'cmake_check_build_system' failed
+make: *** [cmake_check_build_system] Error 1

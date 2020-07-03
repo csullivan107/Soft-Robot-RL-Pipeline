@@ -1,0 +1,31 @@
+[35m[1mScanning dependencies of target _sensor_processing_generate_messages_check_deps_sensor_processing[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_nodejs[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_py[0m
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_nodejs
+[35m[1mScanning dependencies of target std_msgs_generate_messages_cpp[0m
+[  0%] Built target _sensor_processing_generate_messages_check_deps_sensor_processing
+[35m[1mScanning dependencies of target std_msgs_generate_messages_eus[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_lisp[0m
+[  0%] Built target std_msgs_generate_messages_cpp
+[35m[1mScanning dependencies of target sensor_processing_generate_messages_nodejs[0m
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target sensor_processing_generate_messages_py[0m
+[ 14%] [34m[1mGenerating Javascript code from sensor_processing/sensor_processing.msg[0m
+[35m[1mScanning dependencies of target sensor_processing_generate_messages_cpp[0m
+[ 28%] [34m[1mGenerating Python from MSG sensor_processing/sensor_processing[0m
+[35m[1mScanning dependencies of target sensor_processing_generate_messages_eus[0m
+[ 42%] [34m[1mGenerating C++ code from sensor_processing/sensor_processing.msg[0m
+[ 57%] [34m[1mGenerating EusLisp code from sensor_processing/sensor_processing.msg[0m
+[ 71%] [34m[1mGenerating EusLisp manifest code for sensor_processing[0m
+[35m[1mScanning dependencies of target sensor_processing_generate_messages_lisp[0m
+[ 71%] Built target sensor_processing_generate_messages_nodejs
+[ 85%] [34m[1mGenerating Lisp code from sensor_processing/sensor_processing.msg[0m
+[ 85%] Built target sensor_processing_generate_messages_lisp
+[100%] [34m[1mGenerating Python msg __init__.py for sensor_processing[0m
+[100%] Built target sensor_processing_generate_messages_cpp
+[100%] Built target sensor_processing_generate_messages_py
+[100%] Built target sensor_processing_generate_messages_eus
+[35m[1mScanning dependencies of target sensor_processing_generate_messages[0m
+[100%] Built target sensor_processing_generate_messages

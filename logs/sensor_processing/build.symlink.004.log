@@ -1,0 +1,18 @@
+Symlinking /home/robertslab/rl_workspace_0/devel/include/sensor_processing/sensor_processing.h
+Linked: (/home/robertslab/rl_workspace_0/devel/.private/sensor_processing/lib/pkgconfig/sensor_processing.pc, /home/robertslab/rl_workspace_0/devel/lib/pkgconfig/sensor_processing.pc)
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/sensor_processing/__init__.py
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/sensor_processing/msg/__init__.py
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/sensor_processing/msg/_sensor_processing.py
+Symlinking /home/robertslab/rl_workspace_0/devel/share/sensor_processing/cmake/sensor_processing-msg-paths.cmake
+Linked: (/home/robertslab/rl_workspace_0/devel/.private/sensor_processing/share/sensor_processing/cmake/sensor_processingConfig-version.cmake, /home/robertslab/rl_workspace_0/devel/share/sensor_processing/cmake/sensor_processingConfig-version.cmake)
+Linked: (/home/robertslab/rl_workspace_0/devel/.private/sensor_processing/share/sensor_processing/cmake/sensor_processingConfig.cmake, /home/robertslab/rl_workspace_0/devel/share/sensor_processing/cmake/sensor_processingConfig.cmake)
+Symlinking /home/robertslab/rl_workspace_0/devel/share/sensor_processing/cmake/sensor_processing-msg-extras.cmake
+Symlinking /home/robertslab/rl_workspace_0/devel/share/roseus/ros/sensor_processing/manifest.l
+Symlinking /home/robertslab/rl_workspace_0/devel/share/roseus/ros/sensor_processing/msg/sensor_processing.l
+Symlinking /home/robertslab/rl_workspace_0/devel/share/gennodejs/ros/sensor_processing/_index.js
+Symlinking /home/robertslab/rl_workspace_0/devel/share/gennodejs/ros/sensor_processing/msg/sensor_processing.js
+Symlinking /home/robertslab/rl_workspace_0/devel/share/gennodejs/ros/sensor_processing/msg/_index.js
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/sensor_processing/msg/_package.lisp
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/sensor_processing/msg/_package_sensor_processing.lisp
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/sensor_processing/msg/sensor_processing-msg.asd
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/sensor_processing/msg/sensor_processing.lisp

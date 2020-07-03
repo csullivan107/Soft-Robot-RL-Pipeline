@@ -1,0 +1,30 @@
+Symlinking /home/robertslab/rl_workspace_0/devel/include/soft_robot_learning/gcode_packager.h
+Symlinking /home/robertslab/rl_workspace_0/devel/include/soft_robot_learning/apriltag_data.h
+Symlinking /home/robertslab/rl_workspace_0/devel/include/soft_robot_learning/sensor_processing.h
+Linked: (/home/robertslab/rl_workspace_0/devel/.private/soft_robot_learning/lib/pkgconfig/soft_robot_learning.pc, /home/robertslab/rl_workspace_0/devel/lib/pkgconfig/soft_robot_learning.pc)
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/soft_robot_learning/__init__.py
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/soft_robot_learning/msg/__init__.py
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/soft_robot_learning/msg/_apriltag_data.py
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/soft_robot_learning/msg/_sensor_processing.py
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/python2.7/dist-packages/soft_robot_learning/msg/_gcode_packager.py
+Linked: (/home/robertslab/rl_workspace_0/devel/.private/soft_robot_learning/share/soft_robot_learning/cmake/soft_robot_learningConfig-version.cmake, /home/robertslab/rl_workspace_0/devel/share/soft_robot_learning/cmake/soft_robot_learningConfig-version.cmake)
+Linked: (/home/robertslab/rl_workspace_0/devel/.private/soft_robot_learning/share/soft_robot_learning/cmake/soft_robot_learningConfig.cmake, /home/robertslab/rl_workspace_0/devel/share/soft_robot_learning/cmake/soft_robot_learningConfig.cmake)
+Symlinking /home/robertslab/rl_workspace_0/devel/share/soft_robot_learning/cmake/soft_robot_learning-msg-extras.cmake
+Symlinking /home/robertslab/rl_workspace_0/devel/share/soft_robot_learning/cmake/soft_robot_learning-msg-paths.cmake
+Symlinking /home/robertslab/rl_workspace_0/devel/share/roseus/ros/soft_robot_learning/manifest.l
+Symlinking /home/robertslab/rl_workspace_0/devel/share/roseus/ros/soft_robot_learning/msg/sensor_processing.l
+Symlinking /home/robertslab/rl_workspace_0/devel/share/roseus/ros/soft_robot_learning/msg/apriltag_data.l
+Symlinking /home/robertslab/rl_workspace_0/devel/share/roseus/ros/soft_robot_learning/msg/gcode_packager.l
+Symlinking /home/robertslab/rl_workspace_0/devel/share/gennodejs/ros/soft_robot_learning/_index.js
+Symlinking /home/robertslab/rl_workspace_0/devel/share/gennodejs/ros/soft_robot_learning/msg/apriltag_data.js
+Symlinking /home/robertslab/rl_workspace_0/devel/share/gennodejs/ros/soft_robot_learning/msg/gcode_packager.js
+Symlinking /home/robertslab/rl_workspace_0/devel/share/gennodejs/ros/soft_robot_learning/msg/sensor_processing.js
+Symlinking /home/robertslab/rl_workspace_0/devel/share/gennodejs/ros/soft_robot_learning/msg/_index.js
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/soft_robot_learning/msg/_package_apriltag_data.lisp
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/soft_robot_learning/msg/_package.lisp
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/soft_robot_learning/msg/_package_sensor_processing.lisp
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/soft_robot_learning/msg/soft_robot_learning-msg.asd
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/soft_robot_learning/msg/apriltag_data.lisp
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/soft_robot_learning/msg/gcode_packager.lisp
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/soft_robot_learning/msg/_package_gcode_packager.lisp
+Symlinking /home/robertslab/rl_workspace_0/devel/share/common-lisp/ros/soft_robot_learning/msg/sensor_processing.lisp
