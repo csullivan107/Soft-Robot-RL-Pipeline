@@ -5,7 +5,7 @@ from std_msgs.msg import String
 
 print(sys.version)
 
-grblArduino = serial.Serial('/dev/ttyACM0', 115200, timeout=.1, exclusive=0)
+grblArduino = serial.Serial('/dev/ttyACM1', 115200, timeout=.1, exclusive=0)
 
 print("serial information: ")
 print("\t" + grblArduino.name)
@@ -13,7 +13,7 @@ print("\t" + grblArduino.name)
 #call back is called anytime the subscriber gets data from the topic
 def callback(data):
     #str2send = String()
-    str2send = data.data + '\n'
+    str2send = "M8" + '\n' + data.data + '\n' + "M9" + '\n'
     rospy.loginfo(rospy.get_caller_id() + "I heard '%s' and am sending '%s'", data.data, str2send)
     
     grblArduino.write(str2send)

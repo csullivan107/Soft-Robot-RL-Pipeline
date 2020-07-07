@@ -7,7 +7,7 @@ print(sys.version)
 
 
 
-grblArduino = serial.Serial('/dev/ttyACM0', 115200, timeout=.1, exclusive=0)
+grblArduino = serial.Serial('/dev/ttyACM1', 115200, timeout=.1, exclusive=0)
 
 print("serial information: ")
 print("\t" + grblArduino.name)

@@ -3,6 +3,8 @@
 from gym import spaces
 import numpy as np
 import time
+import random
+from math import sqrt
 #import necessary stable baselines TD3 libraries for learning purposes
 
 #import ROS specific libraries and custom message types
@@ -25,6 +27,9 @@ yState = 0.
 xPosition = 0.
 yPosition = 0.
 
+xZero = 0. #zero values for each episode
+yZero = 0.
+
 #define constants
 NUM_STEPS = 1000
 TIME_PER_STEP = 1 #this could be variable depending on hardware
@@ -41,13 +46,16 @@ def robot_state_callback(data):
 	global yState
 	xState = data.xSensor
 	yState = data.ySensor
-	print("x sensor: {}", format(xState))
-	print("y sensor: {}", format(yState))
-	
-	
+	#print("x sensor: {}", format(xState))
+	#print("y sensor: {}", format(yState))	
 
 def gnd_truth_callback(data):
-	print("updating Ground Truth Data")
+	#print("updating Ground Truth Data")
+	global xPosition, yPosition
+	xPosition = data.x_pos_gnd
+	yPosition = data.y_pos_gnd
+	#print("x position: {}", format(xPosition))
+	#print("y position: {}", format(yPosition))
 
 def testData_callback(data):
 	#print("test data recieved")
@@ -66,6 +74,12 @@ def RL_subscribers():
     # skipping spin to see if the subscriber works without spinnign whle the thin is running
     #rospy.spin()	
 
+def distanceFromOrigin(x,y,xZero,yZero):
+	xDist = x - xZero
+	yDist = y - yZero
+	total_distance = sqrt(xDist*xDist+yDist*yDist)
+	return total_distance, xDist, yDist
+
 class soft_learner():
 	def __init__(self):
 		#init position variables
@@ -81,28 +95,46 @@ class soft_learner():
 		self.metadata = 0
 
 	def reset(self):
+		global xZero, yZero, xPosition, yPosition
 		self.x = 0
 		self.y = 0
 		self.n_steps = 0
+		
+		
+		#re calibrate and set x and y zero values for each new run
+		xZero = xPosition
+		yZero = yPosition
+
+		#run calibration function here
 		return self.x, self.y
 
 	def step(self, testnum):
+		global xCommand, yCommand, xPosition, yPosition, xZero, yZero
 		#original testing code
 		
 		#generate an action
 
 		#publish action
-		
-		testpub.publish("testpub: " + str(testnum))
+		xCommand = random.randint(0,100)
+		yCommand = random.randint(0,100)
+		cmd_message = gcode_packager()
+		cmd_message.x_percentage = xCommand
+		cmd_message.y_percentage = yCommand
+		cmd_pub.publish(cmd_message)
+		#testpub.publish("testpub: " + str(testnum))
 
 		#wait for hardware to complete action
 
 		#subscribe/read state
-		global testString
-		self.testS = testString
-		print("Step -- subscribed info: {}", format(self.testS))
+		
 
 		#compute reward
+		reward, x_calibrated, y_calibrated = distanceFromOrigin(xPosition,yPosition, xZero,yZero)
+		print("x position: {}", format(xPosition))
+		print("y position: {}", format(yPosition))
+		print("x calibrated: {}", format(x_calibrated))
+		print("y calibrated: {}", format(y_calibrated))
+		print("reward: {}", format(reward))
 
 		#increment and finish step
 		self.n_steps += 1
@@ -113,19 +145,25 @@ class soft_learner():
 
 
 if __name__ == '__main__':
+	
 	#run suscriber nodes
 	RL_subscribers()
 	print "out of subscriber init"
-
+	time.sleep(3)
 	#init environmnet
 	env = soft_learner()
 	env.reset()
-	rospy.spin()
-	# for i in range(20):
-	# 	print(testString)
-	# 	#testpub.publish("i = " + str(i))
-	# 	time.sleep(1)
-	# 	env.step(i)
+	
+	print("zero set...")
+	print("x zero: {}", format(xZero))
+	print("y zero: {}", format(yZero))
+	
+	#rospy.spin()
+	for i in range(20):
+		#print(testString)
+	 	#testpub.publish("i = " + str(i))
+		time.sleep(1)
+		env.step(i)
 
 
 
