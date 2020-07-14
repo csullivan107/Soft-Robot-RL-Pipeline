@@ -4,8 +4,12 @@ from std_msgs.msg import String
 
 
 print(sys.version)
+usbPort = rospy.get_param('/system_arduino') #get global parameter
 
-grblArduino = serial.Serial('/dev/ttyACM1', 115200, timeout=.1, exclusive=0)
+#get usb port from arguments
+
+#grblArduino = serial.Serial('/dev/ttyACM2', 115200, timeout=.1, exclusive=0)
+grblArduino = serial.Serial(usbPort, 115200, timeout=.1, exclusive=0)
 
 print("serial information: ")
 print("\t" + grblArduino.name)
@@ -21,7 +25,7 @@ def callback(data):
 def grbl_forward():
 
     
-    rospy.init_node('grbl_forward', anonymous=True)
+    rospy.init_node('grbl_serial_forward', anonymous=True)
 
     rospy.Subscriber("grbl_commands", String, callback)
 
