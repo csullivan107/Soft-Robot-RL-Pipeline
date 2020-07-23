@@ -4,7 +4,7 @@ from std_msgs.msg import String
 
 
 print(sys.version)
-usbPort = rospy.get_param('/system_arduino') #get global parameter
+usbPort = rospy.get_param('/grbl_arduino') #get global parameter
 
 #get usb port from arguments
 

@@ -1,12 +1,24 @@
-#!/usr/bin/env python
-#you need this above to get ROS to execute the script
+#!/usr/bin/env python3
+#you need this above to get ROS to execute the script - points to the python executable
+#use python 3 here due to the RL libraries being written in python 3
 from gym import spaces
+import gym
 import numpy as np
 import time
 import random
 from math import sqrt
-#import necessary stable baselines TD3 libraries for learning purposes
 
+# from stable_baselines.td3.policies import MlpPolicy as Td3MlpPolicy
+# # from stable_baselines import TD3
+# from stable_baselines.ddpg.noise import OrnsteinUhlenbeckActionNoise
+# from stable_baselines.common.vec_env import DummyVecEnv 
+
+
+#import necessary stable baselines TD3 libraries for learning purposes
+from stable_baselines import TD3
+from stable_baselines.td3.policies import MlpPolicy as Td3MlpPolicy
+from stable_baselines.ddpg.noise import OrnsteinUhlenbeckActionNoise
+from stable_baselines.common.vec_env import DummyVecEnv
 #import ROS specific libraries and custom message types
 import rospy
 from std_msgs.msg import String
@@ -34,8 +46,10 @@ yZero = 0.
 
 action_done = False
 
+
+
 #define constants
-NUM_STEPS = 1000
+NUM_STEPS = 10
 TIME_PER_STEP = 1 #this could be variable depending on hardware
 
 # define ROS publisher nodes
@@ -140,9 +154,14 @@ class soft_learner():
 		#init steps and dt (time per step)
 		self.n_steps = 0
 		self.dt = TIME_PER_STEP #1=1second - play with this variable
-		#initialize proper spaces and metadata (this is not used for now)
-		self.opservation_space = spaces.Box(low=np.array([0]), high=np.array([100])) #obs space = continuous, 
-		self.action_space = spaces.Box(low=np.array([0.]), high=np.array([100]))
+		#initialize proper spaces and metadata 
+		#both the action and state space are bounded by 0-100 for %of actuation
+		#mapping these to real world actiona dnnand sensors are handeled in another script
+		self.observation_space = spaces.Box(low=np.array([0.,0.]), high=np.array([100.,100.])) #obs space = continuous, 
+		self.action_space = spaces.Box(low=np.array([0.,0.]), high=np.array([100.,100.]))
+#since each action is broken out here i am going to say the action space is only one
+
+
 		self.metadata = 0
 
 		#send initial commands to grbl (home, set 0 all that)
@@ -164,28 +183,39 @@ class soft_learner():
 		#run calibration function here
 		return self.x, self.y
 
-	def step(self):
+	def step(self, generated_cmd_array):
 		global xCommand, yCommand, xPosition, yPosition, xZero, yZero, xState, yState
-		#original testing code
 		
-		#generate an action
+		# print(generated_cmd_array)
+		# xCommand = generated_cmd_array[0]
+		# yCommand = generated_cmd_array[1]
+		# xCommand = np.clip(xCommand, self.action_space.low, self.action_space.high)
+		# yCommand = np.clip(yCommand, self.action_space.low, self.action_space.high)
+		generated_cmd_array = np.clip(generated_cmd_array, self.action_space.low, self.action_space.high)
 
-		xCommand = random.randint(0,100)
-		yCommand = random.randint(0,100)
-		print("command generated x{} y{}", format(xCommand), format(yCommand))
+		#generate an action
+		# xCommand = random.randint(0,100)
+		# yCommand = random.randint(0,100)
+		print("command generated x {} y {}", format(generated_cmd_array[0]), format(generated_cmd_array[1]))
+		#v = np.clip(v, self.action_space.low, self.action_space.high)
+		#above line in example not sure why it is used
+
 		#publish action
 		cmd_message = gcode_packager()
-		cmd_message.x_percentage = xCommand
-		cmd_message.y_percentage = yCommand
+		# cmd_message.x_percentage = xCommand
+		# cmd_message.y_percentage = yCommand
+		cmd_message.x_percentage = generated_cmd_array[0]
+		cmd_message.y_percentage = generated_cmd_array[1]
 		cmd_pub.publish(cmd_message)
 
-		
 		#wait for hardware to complete action
 		wait_for_action()
 
 		#subscribe/read state
-		print("xState: {}", format(xState))
-		print("yState: {}", format(yState))
+		# state = {'x': xState, 'y': yState}
+		state = [xState, yState]
+		print("xState: {}", format(state[0]))
+		print("yState: {}", format(state[1]))
 
 		#compute reward
 		reward, x_calibrated, y_calibrated = distanceFromOrigin(xPosition,yPosition, xZero,yZero)
@@ -199,55 +229,64 @@ class soft_learner():
 		self.n_steps += 1
 		done = self.n_steps > NUM_STEPS
 
-		#return state, reward, done, {}
-
+		return state, reward, done, {}
 
 
 if __name__ == '__main__':
 	
 	#run suscriber nodes
 	RL_subscribers()
+	print("Starting...")
 
-	time.sleep(5) #give ros time to set up
-	#print ("Reset Test")
-	#resetGrblController()
-	#time.sleep (10) #for some reason the grbl controller is homing twice - let it do its think
-
-	#direct_cmd_publisher.publish("G0 X80 Y80")
-	#wait_for_action()
-	#homeRobot()
+	time.sleep(3) #give ros time to set up
 
 	#init environmnet
 	env = soft_learner()
 	env.reset()
-	
-	#print("zero set...")
-	#print("x zero: {}", format(xZero))
-	#print("y zero: {}", format(yZero))
-	
-	#rospy.spin()
-	print("running sensor mount testing")
-	count = 1
-	cmd_message = gcode_packager()
-	while True:
-		cmd_message.x_percentage = 95
-		cmd_message.y_percentage = 0
-		cmd_pub.publish(cmd_message)
-		wait_for_action()
-		print("fully inflated...")
-		cmd_message.x_percentage = 0
-		cmd_message.y_percentage = 0
-		cmd_pub.publish(cmd_message)
-		wait_for_action()
-		print("Not inflated...")
-		count =count+1
-		print (count)
-		if (count%10 == 0):
-			resetGrblController()
 
-	#for i in range(10):
-	#	time.sleep(1)
-	#	env.step()
+	#run and testing
+
+	a_dim = env.action_space.shape[0]
+	td3_noise = OrnsteinUhlenbeckActionNoise(np.zeros(a_dim), 0.003*np.ones(a_dim)) 
+	td3_env = DummyVecEnv([lambda: env])
+	td3_model = TD3(Td3MlpPolicy, td3_env, verbose=0, action_noise=td3_noise, tensorboard_log='tensorboard')
+	td3_model.learn(total_timesteps=100)
+	td3_model.save("td3_model")
+	print('Complete training TD3')
+	# x = td3_env.reset()
+#     for i in range(100): 
+#         x, r, _, _ = td3_env.step(td3_model.predict(x)) 
+#     print(x) 
+#     print(r) 
+	
+
+
+
+
+	
+	# #rospy.spin()
+	# print("running sensor mount testing")
+	# count = 1
+	# cmd_message = gcode_packager()
+	# while True:
+	# 	cmd_message.x_percentage = 95
+	# 	cmd_message.y_percentage = 0
+	# 	cmd_pub.publish(cmd_message)
+	# 	wait_for_action()
+	# 	print("fully inflated...")
+	# 	cmd_message.x_percentage = 0
+	# 	cmd_message.y_percentage = 0
+	# 	cmd_pub.publish(cmd_message)
+	# 	wait_for_action()
+	# 	print("Not inflated...")
+	# 	count =count+1
+	# 	print (count)
+	# 	if (count%10 == 0):
+	# 		resetGrblController()
+
+	# #for i in range(10):
+	# #	time.sleep(1)
+	# #	env.step()
 
 
 

@@ -6,7 +6,7 @@ from std_msgs.msg import String
 print(sys.version)
 
 
-usbPort = rospy.get_param('/system_arduino') #get global parameter
+usbPort = rospy.get_param('/grbl_arduino') #get global parameter
 # grblArduino = serial.Serial('/dev/ttyACM2', 115200, timeout=.1, exclusive=0)
 grblArduino = serial.Serial(usbPort, 115200, timeout=.1, exclusive=0)
 
@@ -17,7 +17,7 @@ def grbl_listener():
 
 	pub = rospy.Publisher('grbl_feedback', String, queue_size=100)
 	rospy.init_node('grbl_serial_recieve', anonymous=True)
-	rate = rospy.Rate(1) # 1hz
+	rate = rospy.Rate(2) # 1hz
 	grblMsg = ""
 	
 	while not rospy.is_shutdown():

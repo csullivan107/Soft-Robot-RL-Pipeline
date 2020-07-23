@@ -2,11 +2,20 @@
 	<!--Define arguments for launch file-->
 	<arg name="video_device" default="/dev/video2" />
 	<arg name="tag_size" default="0.022" />
-	<arg name="grbl_arduino" default="/dev/ttyACM0" />
-	<arg name="system_arduino" default="/dev/ttyACM1" />
+	<arg name="grbl_arduino" default="/dev/ttyACM1" />
+	<arg name="system_arduino" default="/dev/ttyACM0" />
 	<arg name="cam_name" default="RL_cam" />
 	<arg name="camera_calibration_info" default="file:///home/robertslab/.ros/camera_info/RL_cam.yaml" />
 	<arg name="image_arg" default="/usb_cam/image_raw" />
+	<arg name="xSensorMax" default="800" />
+	<arg name="xSensorMin" default="600" />
+	<arg name="ySensorMax" default="800" />
+	<arg name="ySensorMin" default="600" />
+	<arg name="xTravelMax" default="120" />
+	<arg name="xTravelMin" default="0" />
+	<arg name="yTravelMax" default="120" />
+	<arg name="yTravelMin" default="0" />
+
 
 	<!-- Set parameters using the arguments  -->
 	
@@ -15,6 +24,14 @@
 	<param name="grbl_arduino" value="$(arg grbl_arduino)" />
 	<param name="system_arduino" value="$(arg system_arduino)" />
 	<param name="apriltag_ros_continuous_node/default_tag_size" value="$(arg tag_size)" />
+	<param name="xSensorMax" value="$(arg xSensorMax)" />
+	<param name="xSensorMin" value="$(arg xSensorMin)" />
+	<param name="ySensorMax" value="$(arg ySensorMax)" />
+	<param name="ySensorMin" value="$(arg ySensorMin)" />
+	<param name="xTravelMax" value="$(arg xTravelMax)" />
+	<param name="xTravelMin" value="$(arg xTravelMin)" />
+	<param name="yTravelMin" value="$(arg yTravelMin)" />
+	<param name="yTravelMax" value="$(arg yTravelMax)" />f
 	
 	<!--Launch Nodes - Camera-->
 	<node pkg="usb_cam" type="usb_cam_node" name="usb_cam" output="screen">

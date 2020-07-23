@@ -1,0 +1,66 @@
+<launch>
+	<!--Define arguments for launch file-->
+	<arg name="video_device" default="/dev/video2" />
+	<arg name="tag_size" default="0.022" />
+	<arg name="grbl_arduino" default="/dev/ttyACM1" />
+	<arg name="system_arduino" default="/dev/ttyACM0" />
+	<arg name="cam_name" default="RL_cam" />
+	<arg name="camera_calibration_info" default="file:///home/robertslab/.ros/camera_info/RL_cam.yaml" />
+	<arg name="image_arg" default="/usb_cam/image_raw" />
+	<arg name="xSensorMax" default="831" />
+	<arg name="xSensorMin" default="712" />
+	<arg name="ySensorMax" default="859" />
+	<arg name="ySensorMin" default="728" />
+	<arg name="xTravelMax" default="120" />
+	<arg name="xTravelMin" default="0" />
+	<arg name="yTravelMax" default="120" />
+	<arg name="yTravelMin" default="0" />
+
+
+	<!-- Set parameters using the arguments  -->
+	
+	<param name="camera calibration URL" value="$(arg camera_calibration_info)" />
+	<param name="camera_name" value="$(arg cam_name)" />
+	<param name="grbl_arduino" value="$(arg grbl_arduino)" />
+	<param name="system_arduino" value="$(arg system_arduino)" />
+	<param name="apriltag_ros_continuous_node/default_tag_size" value="$(arg tag_size)" />
+	<param name="xSensorMax" value="$(arg xSensorMax)" />
+	<param name="xSensorMin" value="$(arg xSensorMin)" />
+	<param name="ySensorMax" value="$(arg ySensorMax)" />
+	<param name="ySensorMin" value="$(arg ySensorMin)" />
+	<param name="xTravelMax" value="$(arg xTravelMax)" />
+	<param name="xTravelMin" value="$(arg xTravelMin)" />
+	<param name="yTravelMin" value="$(arg yTravelMin)" />
+	<param name="yTravelMax" value="$(arg yTravelMax)" />
+	
+	<!--Launch Nodes - Camera-->
+	<node pkg="usb_cam" type="usb_cam_node" name="usb_cam" output="screen">
+		<param name="video_device" value="$(arg video_device)" />
+		<param name="camera_info_url" value="$(arg camera_calibration_info)" />
+	</node>
+	<node ns="/usb_cam" pkg="image_proc" type="image_proc" name="image_processor" />
+	<node pkg="image_view" type="image_view" name="image_view" output="screen" respawn="false">
+		<!-- <param name="image_view/image" value="$(arg image_arg)"/> -->
+		<remap from="image" to="$(arg image_arg)" /> 
+	</node>
+
+	<!--Launch Nodes - Soft Robot Learning-->
+	<include file="$(find apriltag_ros)/launch/continuous_detection.launch" />
+	<param name="apriltag_ros_continuous_node/standalone_tags[0].size" value="$(arg tag_size)" />
+	
+	<node pkg="rosserial_arduino" type="serial_node.py" name="ros_serial_node" />
+	<node pkg="soft_robot_learning" type="grbl_serial_forward.py" name="grbl_serial_forward"/>
+	<node pkg="soft_robot_learning" type="grbl_serial_recieve.py" name="grbl_serial_recieve"/>
+	<!-- <node pkg="soft_robot_learning" type="sensor_data_processing.py" name="sensor_data_processor"/> -->
+	<node pkg="soft_robot_learning" type="gcode_packager.py" name="gcode_packager"/>
+	<node pkg="soft_robot_learning" type="apriltag_data.py" name="apriltag_data_processing"/>
+	
+	
+	<!-- Learning Node -->
+	<!-- <node pkg="soft_robot_learning" type="learner.py" name="learning_node"/> -->
+
+
+
+
+
+</launch>

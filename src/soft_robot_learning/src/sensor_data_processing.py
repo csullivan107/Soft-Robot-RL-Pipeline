@@ -6,10 +6,13 @@ from sensor_processing.msg import sensor_processing
 
 #these vvalues are ready for setting parameters in ROS
 #ADC values taht are the limits of actuation
-X_HIGH_RAW = 800
-X_LOW_RAW = 400
-Y_HIGH_RAW = 800
-Y_LOW_RAW = 400
+# usbPort = rospy.get_param('/grbl_arduino') #get global parameter
+X_HIGH_RAW = rospy.get_param('/xSensorMax')
+X_LOW_RAW = rospy.get_param('/xSensorMin')
+Y_HIGH_RAW = rospy.get_param('/ySensorMax')
+Y_LOW_RAW = rospy.get_param('/ySensorMin')
+
+print ("XHigh: {}\tXMin: {}\tYMin: {}",format(X_HIGH_RAW),format(X_LOW_RAW) ,format(Y_LOW_RAW))
 
 #define publisher
 #message format - "x: num y: num"
@@ -19,12 +22,8 @@ pub = rospy.Publisher('robot_state', sensor_processing, queue_size = 30)
 #input is raw reading, what reading corresopnds to 0, and 100% actuation respectively
 #adapted from arduino map function
 def raw2rl_mapping(raw,zero_value,hundred_value):
-    raw_mapped = (raw-0)*(hundred_value - zero_value)/(1024 - 0) + zero_value
-    #now that that the value is mapped between the sensor values change that to a percent
-    zero_hund_range = hundred_value-zero_value
-    raw_adjusted = raw_mapped - zero_value
-    percentage = (float(raw_adjusted) / zero_hund_range) * 100
-    print ("input: {}\tmapped+adj: {}\tpercentage: {}",format(raw),format(raw_adjusted) ,format(percentage))
+    percentage = float((raw-zero_value)/(hundred_value-zero_value)*100)
+    print ("input: {}\tpercentage: {}",format(raw) ,format(percentage))
     
     return percentage
 
@@ -33,8 +32,8 @@ def callback0(data):
     #rospy.loginfo(rospy.get_caller_id() + "I heard %s", str(data.adc0))
     global X_LOW_RAW, X_HIGH_RAW, Y_HIGH_RAW, Y_LOW_RAW
     #Read in sensor data from Arduino
-    x_sensor_reading = data.adc0
-    y_sensor_reading = data.adc1
+    x_sensor_reading = float(data.adc0)
+    y_sensor_reading = float(data.adc1)
     #map readings from 0-1024 to percentages (see: calibration)
     x_mapped = raw2rl_mapping(x_sensor_reading,X_LOW_RAW,X_HIGH_RAW)
     y_mapped = raw2rl_mapping(y_sensor_reading,Y_LOW_RAW,Y_HIGH_RAW)

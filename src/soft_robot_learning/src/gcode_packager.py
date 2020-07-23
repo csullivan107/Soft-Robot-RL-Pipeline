@@ -3,11 +3,12 @@ import rospy
 from std_msgs.msg import String
 from soft_robot_learning.msg import gcode_packager
 
+
 #constants from calibration
-X_RANGE_MAX = 120
-X_RANGE_MIN = 0
-Y_RANGE_MAX = 120
-Y_RANGE_MIN = 0
+X_RANGE_MAX = rospy.get_param('/xTravelMax')
+X_RANGE_MIN = rospy.get_param('/xTravelMin')
+Y_RANGE_MAX = rospy.get_param('/yTravelMax')
+Y_RANGE_MIN = rospy.get_param('/yTravelMin')
 
 
 #define publisher
