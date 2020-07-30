@@ -17,7 +17,7 @@ def grbl_listener():
 
 	pub = rospy.Publisher('grbl_feedback', String, queue_size=100)
 	rospy.init_node('grbl_serial_recieve', anonymous=True)
-	rate = rospy.Rate(2) # 1hz
+	rate = rospy.Rate(4) # 1hz
 	grblMsg = ""
 	
 	while not rospy.is_shutdown():

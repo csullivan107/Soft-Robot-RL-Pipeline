@@ -34,12 +34,12 @@ testString = ""
 
 xCommand = 0.
 yCommand = 0.
-
-xState = 0.
-yState = 0.
-
-xPosition = 0.
-yPosition = 0.
+#sensor readings
+xState_global = 0.
+yState_global = 0.
+#apriltag readings
+xPos_global = 0.
+yPos_global = 0.
 
 xZero = 0. #zero values for each episode
 yZero = 0.
@@ -48,8 +48,11 @@ action_done = False
 
 
 
+
+
 #define constants
-NUM_STEPS = 10
+NUM_STEPS_EPISODE = 25
+TOTAL_STEPS = 300
 TIME_PER_STEP = 1 #this could be variable depending on hardware
 
 # define ROS publisher nodes
@@ -62,18 +65,18 @@ testpub = rospy.Publisher('/testData', String, queue_size = 20)
 #define ROS subscriber callback methods
 def robot_state_callback(data):
 	#print("Updating State")
-	global xState
-	global yState
-	xState = data.xSensor
-	yState = data.ySensor
+	global xState_global
+	global yState_global
+	xState_global = data.xSensor
+	yState_global = data.ySensor
 	#print("x sensor: {}", format(xState))
 	#print("y sensor: {}", format(yState))	
 
 def gnd_truth_callback(data):
 	#print("updating Ground Truth Data")
-	global xPosition, yPosition
-	xPosition = data.x_pos_gnd
-	yPosition = data.y_pos_gnd
+	global xPos_global, yPos_global
+	xPos_global = data.x_pos_gnd
+	yPos_global = data.y_pos_gnd
 	#print("x position: {}", format(xPosition))
 	#print("y position: {}", format(yPosition))
 
@@ -97,13 +100,27 @@ def RL_subscribers():
     rospy.Subscriber("/testData", String, testData_callback)
 
     # skipping spin to see if the subscriber works without spinnign whle the thin is running
-    #rospy.spin()	
+    #rospy.spin()
+	# 
+	# 
+#Define various functions used throughout script	
 
-def distanceFromOrigin(x,y,xZero,yZero):
+def rewardCalculation(x, y, xZero, yZero, xPrev, yPrev):
 	xDist = x - xZero
 	yDist = y - yZero
-	total_distance = sqrt(xDist*xDist+yDist*yDist)
-	return total_distance, xDist, yDist
+
+	if yDist < 0:
+		#moved backwards
+		reward = -5
+	else:
+		#moved forward
+		total_distance = sqrt(xDist*xDist+yDist*yDist)
+		reward = total_distance * 5
+
+	#improved reward calculation
+
+
+	return reward, xDist, yDist
 
 def wait_for_action():
 	global action_done
@@ -112,15 +129,54 @@ def wait_for_action():
 		count = count + 1
 		#print(action_done)
 		
-	print("Action Complete...")
+	print("\t--Action Complete--\t|")
 	time.sleep(1)
 
+def screenCmdData(generated, xPrev, yPrev):
+	
+	checkRange = .25
+	changeAmount = .5
+	
+	global step_count
+	xGen = generated[0]
+	yGen = generated[1]
+
+	
+
+	#find difference between generaged and previous command
+	xDiff = xGen-xPrev
+	yDiff = yGen-yPrev
+
+	#a for loop would be better/more scalable here but i just want to see if it works
+
+	if (abs(xDiff) < checkRange):
+		if xGen >  (100. - changeAmount): #this would result in a greator than 100 command
+			xScreened = xGen - changeAmount
+		else:
+			xScreened = xGen + changeAmount
+	else:
+		xScreened = xGen
+
+	if (abs(yDiff) < checkRange):
+		if yGen >  (100. - changeAmount): #this would result in a greator than 100 command
+			yScreened = yGen - changeAmount
+		else:
+			yScreened = yGen + changeAmount
+	else:
+		yScreened = yGen
+
+	# print ('\tScreening command data -- xCmd: ' +str(xScreened) + '\t yCmd: ' + str(yScreened))
+
+
+
+	return [xScreened, yScreened]
 
 
 def homeGrblController():
 	print("Homing System....")
 	direct_cmd_publisher.publish('$H')
 	wait_for_action()
+	time.sleep(.5)
 	direct_cmd_publisher.publish('G92 X0 Y0')
 	print("Homing Complete")
 
@@ -149,8 +205,30 @@ class soft_learner():
 	def __init__(self):
 		#init position variables
 		self.testS = "" #test string for testing data passing
-		self.x = 0
-		self.y = 0
+		self.xCmd = 0
+		self.yCmd = 0
+		self.xCmdPrev = 0
+		self.yCmdPrev = 0
+		self.xPos = 0
+		self.yPos = 0
+		self.xPosPrev = 0
+		self.yPosPrev = 0
+		self.xZero = 0
+		self.yZero = 0
+		self.xState = 0
+		self.yState = 0
+		self.xStatePrev = 0
+		self.yStatePrev = 0
+		self.xZero = 0 
+		self.yZero = 0
+
+		self.state = np.array([0,0])
+		self.statePrev = np.array([0,0])
+
+		self.FirstCommand = True
+
+		self.TotalStepCount = 0
+		self.TotalEpisodeCount = 0
 		#init steps and dt (time per step)
 		self.n_steps = 0
 		self.dt = TIME_PER_STEP #1=1second - play with this variable
@@ -159,7 +237,7 @@ class soft_learner():
 		#mapping these to real world actiona dnnand sensors are handeled in another script
 		self.observation_space = spaces.Box(low=np.array([0.,0.]), high=np.array([100.,100.])) #obs space = continuous, 
 		self.action_space = spaces.Box(low=np.array([0.,0.]), high=np.array([100.,100.]))
-#since each action is broken out here i am going to say the action space is only one
+		#since each action is broken out here i am going to say the action space is only one
 
 
 		self.metadata = 0
@@ -167,25 +245,44 @@ class soft_learner():
 		#send initial commands to grbl (home, set 0 all that)
 
 	def reset(self):
-		global xZero, yZero, xPosition, yPosition
+		global xZero, yZero, xPos_global, yPos_global
 		self.x = 0
 		self.y = 0
 		self.n_steps = 0
-		
-		
-		#re calibrate and set x and y zero values for each new run for april tags data
-		xZero = xPosition
-		yZero = yPosition
+		self.reward = 0
 
+		self.xCmd = 0
+		self.yCmd = 0
+		self.xCmdPrev = 0
+		self.yCmdPrev = 0
+		self.xPos = 0
+		self.yPos = 0
+		self.xPosPrev = 0
+		self.yPosPrev = 0
+		self.xZero = 0
+		self.yZero = 0
+		self.xState = 0
+		self.yState = 0
+		self.xStatePrev = 0
+		self.yStatePrev = 0
+
+		self.FirstCommand = True
+
+		
 		#reset grbl controller
 		resetGrblController()
+		print('==== BEGINNING EPISODE ' + str(self.TotalEpisodeCount) + ' ====')
+
+		#re calibrate and set x and y zero values for each new run for april tags data
+		self.xZero = xPos_global
+		self.yZero = yPos_global
 
 		#run calibration function here
 		return self.x, self.y
 
 	def step(self, generated_cmd_array):
-		global xCommand, yCommand, xPosition, yPosition, xZero, yZero, xState, yState
-		
+		global xPos_global, yPos_global, xState_global, yState_global
+		print('---------------------| Total Steps: ' + str(self.TotalStepCount) + ' | Episode: ' + str(self.TotalEpisodeCount) + ' | Episode Step: '  + str(self.n_steps) + ' |-----------------------')
 		# print(generated_cmd_array)
 		# xCommand = generated_cmd_array[0]
 		# yCommand = generated_cmd_array[1]
@@ -196,7 +293,8 @@ class soft_learner():
 		#generate an action
 		# xCommand = random.randint(0,100)
 		# yCommand = random.randint(0,100)
-		print("command generated x {} y {}", format(generated_cmd_array[0]), format(generated_cmd_array[1]))
+		#print("command generated x {} y {}", format(generated_cmd_array[0]), format(generated_cmd_array[1]))
+		
 		#v = np.clip(v, self.action_space.low, self.action_space.high)
 		#above line in example not sure why it is used
 
@@ -204,8 +302,16 @@ class soft_learner():
 		cmd_message = gcode_packager()
 		# cmd_message.x_percentage = xCommand
 		# cmd_message.y_percentage = yCommand
-		cmd_message.x_percentage = generated_cmd_array[0]
-		cmd_message.y_percentage = generated_cmd_array[1]
+		
+		#preprocess generated commands to make sure they are sufficiently far enough away from last command to not freeze system and within 0-100
+		screened_cmd_array = screenCmdData(generated_cmd_array, self.xCmdPrev, self.yCmdPrev)
+		self.xCmd = screened_cmd_array[0]
+		self.yCmd = screened_cmd_array[1]
+		# print('\tCommand Generated: \t\txCmd:\t' +  str(self.xCmd) + '\tyCmd:\t' + str(self.yCmd))
+		print("\tCommand Generated\t| \t    xCmd: %6.3f \t    yCmd: %6.3f" %(self.xCmd, self.yCmd))
+
+		cmd_message.x_percentage = screened_cmd_array[0]
+		cmd_message.y_percentage = screened_cmd_array[1]
 		cmd_pub.publish(cmd_message)
 
 		#wait for hardware to complete action
@@ -213,23 +319,52 @@ class soft_learner():
 
 		#subscribe/read state
 		# state = {'x': xState, 'y': yState}
-		state = [xState, yState]
-		print("xState: {}", format(state[0]))
-		print("yState: {}", format(state[1]))
+		self.state = [xState_global, yState_global]
+		self.xState = self.state[0]
+		self.yState = self.state[1]
+		# print('\tState information: \t\txState:' + str(self.xState) + '\t\t\t\tyState: ' + str(self.yState))
+		# print('\tState information: \t\txStatePrev:' + str(self.xStatePrev) + '\t\t\t\tyStatePrev: ' + str(self.yStatePrev))
+		print("\tState Information\t| \t  xState: %6.3f \t  yState: %6.3f" %(self.xState, self.yState))
+		print("\t                 \t| \t  xSPrev: %6.3f \t  ySPrev: %6.3f" %(self.xStatePrev, self.yStatePrev))
 
 		#compute reward
-		reward, x_calibrated, y_calibrated = distanceFromOrigin(xPosition,yPosition, xZero,yZero)
+		self.reward, self.xPos, self.yPos = rewardCalculation(xPos_global, yPos_global, self.xZero, self.yZero, self.xPosPrev, self.yPosPrev)
 		#print("x position: {}", format(xPosition))
 		#print("y position: {}", format(yPosition))
-		print("x calibrated: {}", format(x_calibrated))
-		print("y calibrated: {}", format(y_calibrated))
-		print("reward: {}", format(reward))
+		# print("x calibrated: {}", format(x_calibrated))
+		# print("y calibrated: {}", format(y_calibrated))
+		# print("reward: {}", format(self.reward))
+		# print('--Position and Reward Data--')
+		# print('\tPosition information: \t\txPos: '+ str(self.xPos) + '\tyPos: ' + str(self.yPos))
+		# print('\tPrevious Position: \t\txPosPrev: '+ str(self.xPosPrev) + '\t\t\t\tyPosPrev: ' + str(self.yPosPrev))
+		# print('\tReward Information: \t\tReward: ' + str(self.reward))
+
+		print("\tPosition Information\t| \t    xPos: %6.3f \t    yPos: %6.3f" %(self.xPos, self.yPos))
+		print("\t                    \t| \txPosPrev: %6.3f \tyPosPrev: %6.3f" %(self.xPosPrev, self.yPosPrev))
+		print("\t                    \t| \t   xZero:%6.3f \t    yZero: %6.3f" %(self.xZero, self.yZero))
+		print("\tReward Information  \t| \t  Reward: %6.3f" %(self.reward))
+
+		#assign all current data to previous data containers for next state
+		self.xStatePrev = self.xState
+		self.yStatePrev = self.yState
+		self.xCmdPrev = self.xCmd
+		self.yCmdPrev = self.yCmd
+		self.xPosPrev = self.xPos
+		self.yPosPrev = self.yPos
 
 		#increment and finish step
+		self.TotalStepCount = self.TotalStepCount + 1
+		# step_count = step_count +1
+		# print ("step count: {}", format(step_count))
+		
 		self.n_steps += 1
-		done = self.n_steps > NUM_STEPS
+		if self.n_steps > NUM_STEPS_EPISODE:
+			self.TotalEpisodeCount = self.TotalEpisodeCount + 1
+			print('====END OF EPISODE====')
+		done = self.n_steps > NUM_STEPS_EPISODE
 
-		return state, reward, done, {}
+
+		return self.state, self.reward, done, {}
 
 
 if __name__ == '__main__':
@@ -243,14 +378,20 @@ if __name__ == '__main__':
 	#init environmnet
 	env = soft_learner()
 	env.reset()
+	print('done')
 
+	
+
+	# for i in range(10):
+	# 	genCmdTest = np.array([random.uniform(0,100), random.uniform(0,100)])
+	# 	env.step(genCmdTest)
 	#run and testing
 
 	a_dim = env.action_space.shape[0]
 	td3_noise = OrnsteinUhlenbeckActionNoise(np.zeros(a_dim), 0.003*np.ones(a_dim)) 
 	td3_env = DummyVecEnv([lambda: env])
 	td3_model = TD3(Td3MlpPolicy, td3_env, verbose=0, action_noise=td3_noise, tensorboard_log='tensorboard')
-	td3_model.learn(total_timesteps=100)
+	td3_model.learn(total_timesteps=TOTAL_STEPS)
 	td3_model.save("td3_model")
 	print('Complete training TD3')
 	# x = td3_env.reset()

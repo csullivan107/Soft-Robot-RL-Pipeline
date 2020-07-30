@@ -56,7 +56,7 @@
 	<node pkg="rosserial_arduino" type="serial_node.py" name="ros_serial_node" />
 	<node pkg="soft_robot_learning" type="grbl_serial_forward.py" name="grbl_serial_forward"/>
 	<node pkg="soft_robot_learning" type="grbl_serial_recieve.py" name="grbl_serial_recieve"/>
-	<node pkg="soft_robot_learning" type="sensor_data_processing.py" name="sensor_data_processor"/>
+	<!-- <node pkg="soft_robot_learning" type="sensor_data_processing.py" name="sensor_data_processor"/> -->
 	<node pkg="soft_robot_learning" type="gcode_packager.py" name="gcode_packager"/>
 	<node pkg="soft_robot_learning" type="apriltag_data.py" name="apriltag_data_processing"/>
 	
