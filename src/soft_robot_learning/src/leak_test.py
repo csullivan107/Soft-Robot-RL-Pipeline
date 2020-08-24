@@ -121,16 +121,18 @@ if __name__ == '__main__':
 	y_readings = {}
 	minutes = 0
 	#read sensors overnight every 5 minutes for.... 12 hours (144 readings)
-	for i in range(420):
+	print("Starting leak test...")
+	for i in range(144):
 		x_readings[minutes]=xState_global
 		y_readings[minutes]=yState_global
-		time.sleep(120) #wat 2 minutes 600 total
+		
 		
 		print('----------------- ' + str(minutes) + ' Minutes Passed -------------------')
 		print('\t\tX Sensor Reading: ' + str(x_readings[minutes]))
 		print('\t\tY Sensor Reading: ' + str(y_readings[minutes]))
 
 		minutes += 5
+		time.sleep(300) #wat 2 minutes 600 total
 
 	#save to files... json
 	run = 0

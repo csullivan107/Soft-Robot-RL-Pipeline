@@ -1,7 +1,7 @@
 <launch>
 	<!--Define arguments for launch file-->
 	<arg name="video_device" default="/dev/video2" />
-	<arg name="tag_size" default="0.022" />
+	<arg name="tag_size" default="0.04" />
 	<arg name="grbl_arduino" default="/dev/ttyACM1" />
 	<arg name="system_arduino" default="/dev/ttyACM0" />
 	<arg name="cam_name" default="RL_cam" />

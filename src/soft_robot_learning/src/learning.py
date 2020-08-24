@@ -341,7 +341,7 @@ class soft_learner():
 
 		print("\tPosition Information\t| \t    xPos: %6.3f \t    yPos: %6.3f" %(self.xPos, self.yPos))
 		print("\t                    \t| \txPosPrev: %6.3f \tyPosPrev: %6.3f" %(self.xPosPrev, self.yPosPrev))
-		print("\t                    \t| \t   xZero:%6.3f \t    yZero: %6.3f" %(self.xZero, self.yZero))
+		print("\t                    \t| \t   xZero: %6.3f \t   yZero: %6.3f" %(self.xZero, self.yZero))
 		print("\tReward Information  \t| \t  Reward: %6.3f" %(self.reward))
 
 		#assign all current data to previous data containers for next state

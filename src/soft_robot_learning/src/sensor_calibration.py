@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#this file must be run inside the catkin base worksapce for the directories to work properly
+
 import numpy as np
 import time
 import pprint
@@ -30,6 +32,7 @@ xPos_global = 0.
 yPos_global = 0.
 
 numReadings = 5
+robotName = 'robot_3'
 
 action_done = False
 
@@ -229,7 +232,7 @@ if __name__ == '__main__':
 	
 	#save to files... json
 	run = 0
-	baseDir = 'sensor_calibration_files/Calibration_run_'
+	baseDir = 'src/soft_robot_learning/src/sensor_calibration_files/' + robotName + '/Calibration_run_'
 
 
 	t = datetime.datetime.now()
@@ -357,7 +360,7 @@ if __name__ == '__main__':
 	f.close()
 
 	yCal_y_avg_json_x50_sdev = json.dumps(yCalibrate_y_avg_x50_sdev)
-	f = open(os.path.join(dirName, "yCal_y_avg_x0_sdev.json"), "w")
+	f = open(os.path.join(dirName, "yCal_y_avg_x50_sdev.json"), "w")
 	f.write(yCal_y_avg_json_x50_sdev)
 	f.close()
 

@@ -23,7 +23,7 @@ class find_five():
         self.n_steps = 0
         return self.x
         
-    def step(self):
+    def step(self, v):
         v = np.clip(v, self.action_space.low, self.action_space.high)
         # print('v = {}'.format(v))
         # print('x before = {}'.format(self.x))
