@@ -9,7 +9,7 @@ import struct
 class TopicInfo(genpy.Message):
   _md5sum = "0ad51f88fc44892f8c10684077646005"
   _type = "rosserial_msgs/TopicInfo"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """# special topic_ids
 uint16 ID_PUBLISHER=0
 uint16 ID_SUBSCRIBER=1
@@ -61,7 +61,7 @@ int32 buffer_size
     """
     if args or kwds:
       super(TopicInfo, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.topic_id is None:
         self.topic_id = 0
       if self.topic_name is None:
@@ -91,7 +91,8 @@ int32 buffer_size
     :param buff: buffer, ``StringIO``
     """
     try:
-      buff.write(_get_struct_H().pack(self.topic_id))
+      _x = self.topic_id
+      buff.write(_get_struct_H().pack(_x))
       _x = self.topic_name
       length = len(_x)
       if python3 or type(_x) == unicode:
@@ -110,7 +111,8 @@ int32 buffer_size
         _x = _x.encode('utf-8')
         length = len(_x)
       buff.write(struct.pack('<I%ss'%length, length, _x))
-      buff.write(_get_struct_i().pack(self.buffer_size))
+      _x = self.buffer_size
+      buff.write(_get_struct_i().pack(_x))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -156,7 +158,7 @@ int32 buffer_size
       (self.buffer_size,) = _get_struct_i().unpack(str[start:end])
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -166,7 +168,8 @@ int32 buffer_size
     :param numpy: numpy python module
     """
     try:
-      buff.write(_get_struct_H().pack(self.topic_id))
+      _x = self.topic_id
+      buff.write(_get_struct_H().pack(_x))
       _x = self.topic_name
       length = len(_x)
       if python3 or type(_x) == unicode:
@@ -185,7 +188,8 @@ int32 buffer_size
         _x = _x.encode('utf-8')
         length = len(_x)
       buff.write(struct.pack('<I%ss'%length, length, _x))
-      buff.write(_get_struct_i().pack(self.buffer_size))
+      _x = self.buffer_size
+      buff.write(_get_struct_i().pack(_x))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -232,21 +236,21 @@ int32 buffer_size
       (self.buffer_size,) = _get_struct_i().unpack(str[start:end])
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
-_struct_i = None
-def _get_struct_i():
-    global _struct_i
-    if _struct_i is None:
-        _struct_i = struct.Struct("<i")
-    return _struct_i
 _struct_H = None
 def _get_struct_H():
     global _struct_H
     if _struct_H is None:
         _struct_H = struct.Struct("<H")
     return _struct_H
+_struct_i = None
+def _get_struct_i():
+    global _struct_i
+    if _struct_i is None:
+        _struct_i = struct.Struct("<i")
+    return _struct_i

@@ -159,14 +159,14 @@ struct Definition< ::apriltag_ros::AnalyzeSingleImageRequest_<ContainerAllocator
 {
   static const char* value()
   {
-    return "\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"\n"
+    return "# Service which takes in:\n"
+"#\n"
+"#   full_path_to_image : full path to a .jpg image\n"
+"#\n"
+"# and returns:\n"
+"#\n"
+"#                 pose : the pose of the tag in the camera frame\n"
+"#  tag_detection_image : an image with the detected tag's border highlighted and payload value printed\n"
 "\n"
 "string full_path_where_to_get_image\n"
 "string full_path_where_to_save_image\n"

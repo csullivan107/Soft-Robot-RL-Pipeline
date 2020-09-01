@@ -8,7 +8,6 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/robertslab/rl_workspace_0/devel/.private/usb_cam:$CMAKE_PREFIX_PATH"
-export PATH="/home/robertslab/rl_workspace_0/devel/bin:$PATH"
 export PWD="/home/robertslab/rl_workspace_0/build/usb_cam"
 export ROSLISP_PACKAGE_DIRECTORIES="/home/robertslab/rl_workspace_0/devel/.private/usb_cam/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/home/robertslab/rl_workspace_0/src/usb_cam:$ROS_PACKAGE_PATH"

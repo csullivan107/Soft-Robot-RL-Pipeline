@@ -7,6 +7,8 @@ import numpy as np
 import time
 import random
 from math import sqrt
+import datetime
+import os
 
 # from stable_baselines.td3.policies import MlpPolicy as Td3MlpPolicy
 # # from stable_baselines import TD3
@@ -46,14 +48,63 @@ yZero = 0.
 
 action_done = False
 
-
-
-
-
 #define constants
-NUM_STEPS_EPISODE = 25
-TOTAL_STEPS = 300
+NUM_STEPS_EPISODE = 24 #index at 0 - (desirednum - 1)
+TOTAL_STEPS = 200
 TIME_PER_STEP = 1 #this could be variable depending on hardware
+robotName = "robot_1"
+NOISE_CONSTANT = 3.5
+
+#here are the constants for the TD3 Model
+GAMMA = 0.99
+LEARNING_RATE = .0003
+BUFFER_SIZE = 50000
+LEARNING_STARTS = 100
+TRAIN_FREQ = 100
+GRADIENT_STEPS = 100
+BATCH_SIZE = 128
+TAU = .005
+POLICY_DELAY = 2
+# ACTION_NOISE = None | this is set later when you build the noise generator
+TARGET_POLICY_NOISE = 0.2
+TARGET_NOISE_CLIP = 0.5
+RANDOM_EXPLORATION = 0.0
+VERBOSE = 0
+TENSORBOARD_LOG = 'tensorboard'
+_INIT_SETUP_MODEL = True
+POLICY_KWARGS = None
+FULL_TENSORBOARD_LOG = False
+SEED = None
+N_CPU_TF_SESS = None
+
+
+
+#set up a log file for the printed output
+baseDir = 'src/soft_robot_learning/src/learning_logs/' + robotName + '/learining_run_'
+
+
+t = datetime.datetime.now()
+t = t.strftime("%m_%d_%y_%X/")
+dirName = baseDir + t 
+if not os.path.exists(dirName):
+	os.makedirs(dirName)
+	print(dirName + " created successfully")
+	done = True
+else:
+	print(dirName + " exists")
+	run += 1
+		
+file = open(os.path.join(dirName, "learn.txt"), "w")
+file.close()
+
+
+# ACTUATOR_X_MAX = rospy.get_param('/xActMax')
+# ACTUATOR_X_MIN = rospy.get_param('/xActMin')
+# ACTUATOR_y_MAX = rospy.get_param('/yActMax')
+# ACTUATOR_y_MIN = rospy.get_param('/yActMin')
+
+
+
 
 # define ROS publisher nodes
 cmd_pub = rospy.Publisher('/actuator_commands', gcode_packager, queue_size = 30)
@@ -111,15 +162,14 @@ def rewardCalculation(x, y, xZero, yZero, xPrev, yPrev):
 
 	if yDist < 0:
 		#moved backwards
-		reward = -5
+		reward = yDist * 1000
 	else:
 		#moved forward
-		total_distance = sqrt(xDist*xDist+yDist*yDist)
-		reward = total_distance * 5
+		reward = yDist * 1000 #positions given in meters so to make reward large use mm
 
 	#improved reward calculation
 
-
+	# reward = 10
 	return reward, xDist, yDist
 
 def wait_for_action():
@@ -135,7 +185,7 @@ def wait_for_action():
 def screenCmdData(generated, xPrev, yPrev):
 	
 	checkRange = .25
-	changeAmount = .5
+	changeAmount = 1.5
 	
 	global step_count
 	xGen = generated[0]
@@ -222,6 +272,9 @@ class soft_learner():
 		self.xZero = 0 
 		self.yZero = 0
 
+
+		self.log_file = None
+
 		self.state = np.array([0,0])
 		self.statePrev = np.array([0,0])
 
@@ -237,6 +290,10 @@ class soft_learner():
 		#mapping these to real world actiona dnnand sensors are handeled in another script
 		self.observation_space = spaces.Box(low=np.array([0.,0.]), high=np.array([100.,100.])) #obs space = continuous, 
 		self.action_space = spaces.Box(low=np.array([0.,0.]), high=np.array([100.,100.]))
+		# self.action_space = spaces.Box(low=np.array([xActMin,yActMin]), high=np.array([xActMax,yActMax]))
+		# print("Calibrating action space from ROS parameters...")
+		# print("\txMin: "+xActMin+"\txMax: "+xActMax)
+		# print("\tyMin: "+yActMin+"\tyMax: "+yActMax)
 		#since each action is broken out here i am going to say the action space is only one
 
 
@@ -282,7 +339,16 @@ class soft_learner():
 
 	def step(self, generated_cmd_array):
 		global xPos_global, yPos_global, xState_global, yState_global
+		f = open(os.path.join(dirName, "learn.txt"), "a")
+		self.log_file = f
+
+
+		xPos_current = xPos_global #try to take a 0 so every stpe knows where it starts and us it to find reward
+		yPos_current = yPos_global
+		
+		
 		print('---------------------| Total Steps: ' + str(self.TotalStepCount) + ' | Episode: ' + str(self.TotalEpisodeCount) + ' | Episode Step: '  + str(self.n_steps) + ' |-----------------------')
+		self.log_file.write('---------------------| Total Steps: ' + str(self.TotalStepCount) + ' | Episode: ' + str(self.TotalEpisodeCount) + ' | Episode Step: '  + str(self.n_steps) + ' |-----------------------\n')
 		# print(generated_cmd_array)
 		# xCommand = generated_cmd_array[0]
 		# yCommand = generated_cmd_array[1]
@@ -309,7 +375,7 @@ class soft_learner():
 		self.yCmd = screened_cmd_array[1]
 		# print('\tCommand Generated: \t\txCmd:\t' +  str(self.xCmd) + '\tyCmd:\t' + str(self.yCmd))
 		print("\tCommand Generated\t| \t    xCmd: %6.3f \t    yCmd: %6.3f" %(self.xCmd, self.yCmd))
-
+		self.log_file.write("\tCommand Generated\t| \t    xCmd: %6.3f \t    yCmd: %6.3f\n" %(self.xCmd, self.yCmd))
 		cmd_message.x_percentage = screened_cmd_array[0]
 		cmd_message.y_percentage = screened_cmd_array[1]
 		cmd_pub.publish(cmd_message)
@@ -326,9 +392,13 @@ class soft_learner():
 		# print('\tState information: \t\txStatePrev:' + str(self.xStatePrev) + '\t\t\t\tyStatePrev: ' + str(self.yStatePrev))
 		print("\tState Information\t| \t  xState: %6.3f \t  yState: %6.3f" %(self.xState, self.yState))
 		print("\t                 \t| \t  xSPrev: %6.3f \t  ySPrev: %6.3f" %(self.xStatePrev, self.yStatePrev))
-
+		self.log_file.write("\tState Information\t| \t  xState: %6.3f \t  yState: %6.3f\n" %(self.xState, self.yState))
+		self.log_file.write("\t                 \t| \t  xSPrev: %6.3f \t  ySPrev: %6.3f\n" %(self.xStatePrev, self.yStatePrev))
 		#compute reward
+		#use beginning of episode as zero
 		self.reward, self.xPos, self.yPos = rewardCalculation(xPos_global, yPos_global, self.xZero, self.yZero, self.xPosPrev, self.yPosPrev)
+		#use each steps starting position to find reward
+		self.reward, self.xPos, self.yPos = rewardCalculation(xPos_global, yPos_global, xPos_current, yPos_current, self.xPosPrev, self.yPosPrev)
 		#print("x position: {}", format(xPosition))
 		#print("y position: {}", format(yPosition))
 		# print("x calibrated: {}", format(x_calibrated))
@@ -343,6 +413,10 @@ class soft_learner():
 		print("\t                    \t| \txPosPrev: %6.3f \tyPosPrev: %6.3f" %(self.xPosPrev, self.yPosPrev))
 		print("\t                    \t| \t   xZero: %6.3f \t   yZero: %6.3f" %(self.xZero, self.yZero))
 		print("\tReward Information  \t| \t  Reward: %6.3f" %(self.reward))
+		self.log_file.write("\tPosition Information\t| \t    xPos: %6.3f \t    yPos: %6.3f\n" %(self.xPos, self.yPos))
+		self.log_file.write("\t                    \t| \txPosPrev: %6.3f \tyPosPrev: %6.3f\n" %(self.xPosPrev, self.yPosPrev))
+		self.log_file.write("\t                    \t| \t   xZero: %6.3f \t   yZero: %6.3f\n" %(self.xZero, self.yZero))
+		self.log_file.write("\tReward Information  \t| \t  Reward: %6.3f\n" %(self.reward))
 
 		#assign all current data to previous data containers for next state
 		self.xStatePrev = self.xState
@@ -361,8 +435,10 @@ class soft_learner():
 		if self.n_steps > NUM_STEPS_EPISODE:
 			self.TotalEpisodeCount = self.TotalEpisodeCount + 1
 			print('====END OF EPISODE====')
+			self.log_file.write('====END OF EPISODE====\n')
 		done = self.n_steps > NUM_STEPS_EPISODE
 
+		self.log_file.close()
 
 		return self.state, self.reward, done, {}
 
@@ -377,7 +453,7 @@ if __name__ == '__main__':
 
 	#init environmnet
 	env = soft_learner()
-	env.reset()
+	
 	print('done')
 
 	
@@ -388,12 +464,40 @@ if __name__ == '__main__':
 	#run and testing
 
 	a_dim = env.action_space.shape[0]
-	td3_noise = OrnsteinUhlenbeckActionNoise(np.zeros(a_dim), 0.003*np.ones(a_dim)) 
+	td3_noise = OrnsteinUhlenbeckActionNoise(np.zeros(a_dim), NOISE_CONSTANT*np.ones(a_dim)) 
 	td3_env = DummyVecEnv([lambda: env])
-	td3_model = TD3(Td3MlpPolicy, td3_env, verbose=0, action_noise=td3_noise, tensorboard_log='tensorboard')
+	td3_model = TD3(Td3MlpPolicy, td3_env,  action_noise=td3_noise,
+					verbose=VERBOSE,
+					tensorboard_log='tensorboard')
+
+	td3_model = TD3(Td3MlpPolicy, td3_env,
+					gamma = GAMMA,
+					learning_rate = LEARNING_RATE,
+					buffer_size = BUFFER_SIZE,
+					learning_starts = LEARNING_STARTS,
+					train_freq = TRAIN_FREQ,
+					gradient_steps = GRADIENT_STEPS,
+					batch_size = BATCH_SIZE,
+					tau = TAU,
+					policy_delay = POLICY_DELAY,
+					action_noise = td3_noise,
+					target_policy_noise = TARGET_POLICY_NOISE,
+					target_noise_clip = TARGET_NOISE_CLIP,
+					random_exploration = RANDOM_EXPLORATION,
+					verbose = VERBOSE,
+					tensorboard_log = TENSORBOARD_LOG,
+					_init_setup_model = _INIT_SETUP_MODEL,
+					policy_kwargs = POLICY_KWARGS,
+					full_tensorboard_log = FULL_TENSORBOARD_LOG,
+					seed = SEED,
+					n_cpu_tf_sess = N_CPU_TF_SESS)
+	# td3_model = TD3.load("td3_model")
+	# td3_model.set_env(env)
+	env.reset()
 	td3_model.learn(total_timesteps=TOTAL_STEPS)
 	td3_model.save("td3_model")
 	print('Complete training TD3')
+	# file.close()
 	# x = td3_env.reset()
 #     for i in range(100): 
 #         x, r, _, _ = td3_env.step(td3_model.predict(x)) 

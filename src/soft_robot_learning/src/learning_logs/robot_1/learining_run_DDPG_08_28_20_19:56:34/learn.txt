@@ -1,0 +1,4 @@
+---------------------| Total Steps: 0 | Episode: 0 | Episode Step: 0 |-----------------------
+	Command Generated	| 	    xCmd: 44.607 	    yCmd: 31.061
+	State Information	| 	  xState: 45.385 	  yState: 33.793
+	                 	| 	  xSPrev:  0.000 	  ySPrev:  0.000

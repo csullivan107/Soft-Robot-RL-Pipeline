@@ -139,14 +139,14 @@
 (setf (get apriltag_ros::AnalyzeSingleImageRequest :md5sum-) "d60d994450f73cbdba772751d78c9952")
 (setf (get apriltag_ros::AnalyzeSingleImageRequest :datatype-) "apriltag_ros/AnalyzeSingleImageRequest")
 (setf (get apriltag_ros::AnalyzeSingleImageRequest :definition-)
-      "
-
-
-
-
-
-
-
+      "# Service which takes in:
+#
+#   full_path_to_image : full path to a .jpg image
+#
+# and returns:
+#
+#                 pose : the pose of the tag in the camera frame
+#  tag_detection_image : an image with the detected tag's border highlighted and payload value printed
 
 string full_path_where_to_get_image
 string full_path_where_to_save_image
@@ -408,14 +408,14 @@ float64 w
 (setf (get apriltag_ros::AnalyzeSingleImageResponse :md5sum-) "d60d994450f73cbdba772751d78c9952")
 (setf (get apriltag_ros::AnalyzeSingleImageResponse :datatype-) "apriltag_ros/AnalyzeSingleImageResponse")
 (setf (get apriltag_ros::AnalyzeSingleImageResponse :definition-)
-      "
-
-
-
-
-
-
-
+      "# Service which takes in:
+#
+#   full_path_to_image : full path to a .jpg image
+#
+# and returns:
+#
+#                 pose : the pose of the tag in the camera frame
+#  tag_detection_image : an image with the detected tag's border highlighted and payload value printed
 
 string full_path_where_to_get_image
 string full_path_where_to_save_image

@@ -1,3 +1,4 @@
+set(camera_calibration_SETUP_PY_SETUP_MODULE "distutils.core")
 set(camera_calibration_SETUP_PY_VERSION "1.15.0")
 set(camera_calibration_SETUP_PY_SCRIPTS "")
 set(camera_calibration_SETUP_PY_PACKAGES "camera_calibration")

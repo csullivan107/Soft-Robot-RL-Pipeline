@@ -11,7 +11,7 @@ import std_msgs.msg
 class AprilTagDetection(genpy.Message):
   _md5sum = "090173a6e2b6c8fd96ce000fe9378b4e"
   _type = "apriltag_ros/AprilTagDetection"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """# Tag ID(s). If a standalone tag, this is a vector of size 1. If a tag bundle,
 # this is a vector containing the IDs of each tag in the bundle.
 int32[] id
@@ -102,7 +102,7 @@ float64 w
     """
     if args or kwds:
       super(AprilTagDetection, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.id is None:
         self.id = []
       if self.size is None:
@@ -193,7 +193,7 @@ float64 w
       self.pose.pose.covariance = _get_struct_36d().unpack(str[start:end])
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -271,12 +271,18 @@ float64 w
       self.pose.pose.covariance = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=36)
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
+_struct_36d = None
+def _get_struct_36d():
+    global _struct_36d
+    if _struct_36d is None:
+        _struct_36d = struct.Struct("<36d")
+    return _struct_36d
 _struct_3I = None
 def _get_struct_3I():
     global _struct_3I
@@ -289,9 +295,3 @@ def _get_struct_7d():
     if _struct_7d is None:
         _struct_7d = struct.Struct("<7d")
     return _struct_7d
-_struct_36d = None
-def _get_struct_36d():
-    global _struct_36d
-    if _struct_36d is None:
-        _struct_36d = struct.Struct("<36d")
-    return _struct_36d

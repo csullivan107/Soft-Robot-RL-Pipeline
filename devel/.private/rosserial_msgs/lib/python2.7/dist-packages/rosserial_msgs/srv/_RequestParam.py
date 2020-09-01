@@ -9,7 +9,7 @@ import struct
 class RequestParamRequest(genpy.Message):
   _md5sum = "c1f3d28f1b044c871e6eff2e9fc3c667"
   _type = "rosserial_msgs/RequestParamRequest"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """string name
 
 """
@@ -32,7 +32,7 @@ class RequestParamRequest(genpy.Message):
     """
     if args or kwds:
       super(RequestParamRequest, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.name is None:
         self.name = ''
     else:
@@ -77,7 +77,7 @@ class RequestParamRequest(genpy.Message):
         self.name = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -115,7 +115,7 @@ class RequestParamRequest(genpy.Message):
         self.name = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():
@@ -132,7 +132,7 @@ import struct
 class RequestParamResponse(genpy.Message):
   _md5sum = "9f0e98bda65981986ddf53afa7a40e49"
   _type = "rosserial_msgs/RequestParamResponse"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """
 int32[]   ints
 float32[] floats
@@ -158,7 +158,7 @@ string[]  strings
     """
     if args or kwds:
       super(RequestParamResponse, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.ints is None:
         self.ints = []
       if self.floats is None:
@@ -239,7 +239,7 @@ string[]  strings
         self.strings.append(val1)
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -307,7 +307,7 @@ string[]  strings
         self.strings.append(val1)
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():

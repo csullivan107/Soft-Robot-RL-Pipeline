@@ -23,8 +23,14 @@ pub = rospy.Publisher('robot_state', sensor_processing, queue_size = 30)
 #adapted from arduino map function
 def raw2rl_mapping(raw,zero_value,hundred_value):
     percentage = float((raw-zero_value)/(hundred_value-zero_value)*100)
-    print ("input: {}\tpercentage: {}",format(raw) ,format(percentage))
-    
+    # print ("input: {}\tpercentage: {}",format(raw) ,format(percentage))
+
+    #the machine learning script is expecting values from 0-100 - clip this data so that script doesnt fail
+    if percentage > 100:
+        percentage = 100.
+    elif percentage < 0:
+        percentage = 0.
+   
     return percentage
 
 
@@ -41,6 +47,7 @@ def callback0(data):
     message = sensor_processing()
     message.xSensor = x_mapped
     message.ySensor = y_mapped
+    print(message)
     pub.publish(message)
     
     

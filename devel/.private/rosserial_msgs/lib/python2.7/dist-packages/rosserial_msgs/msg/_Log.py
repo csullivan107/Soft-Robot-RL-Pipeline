@@ -9,7 +9,7 @@ import struct
 class Log(genpy.Message):
   _md5sum = "11abd731c25933261cd6183bd12d6295"
   _type = "rosserial_msgs/Log"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """
 #ROS Logging Levels
 uint8 ROSDEBUG=0
@@ -47,7 +47,7 @@ string msg
     """
     if args or kwds:
       super(Log, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.level is None:
         self.level = 0
       if self.msg is None:
@@ -68,7 +68,8 @@ string msg
     :param buff: buffer, ``StringIO``
     """
     try:
-      buff.write(_get_struct_B().pack(self.level))
+      _x = self.level
+      buff.write(_get_struct_B().pack(_x))
       _x = self.msg
       length = len(_x)
       if python3 or type(_x) == unicode:
@@ -99,7 +100,7 @@ string msg
         self.msg = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -109,7 +110,8 @@ string msg
     :param numpy: numpy python module
     """
     try:
-      buff.write(_get_struct_B().pack(self.level))
+      _x = self.level
+      buff.write(_get_struct_B().pack(_x))
       _x = self.msg
       length = len(_x)
       if python3 or type(_x) == unicode:
@@ -141,7 +143,7 @@ string msg
         self.msg = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():

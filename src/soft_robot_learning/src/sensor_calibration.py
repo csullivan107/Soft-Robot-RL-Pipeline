@@ -32,7 +32,7 @@ xPos_global = 0.
 yPos_global = 0.
 
 numReadings = 5
-robotName = 'robot_3'
+robotName = 'robot_1'
 
 action_done = False
 

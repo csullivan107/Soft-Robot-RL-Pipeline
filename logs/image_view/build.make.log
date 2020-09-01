@@ -4,5 +4,5 @@
 [ 41%] Built target disparity_view
 [ 52%] Built target image_view_exe
 [ 64%] Built target extract_images
-[ 88%] Built target image_view
-[100%] Built target stereo_view
+[ 76%] Built target stereo_view
+[100%] Built target image_view

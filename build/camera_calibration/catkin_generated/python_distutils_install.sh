@@ -26,6 +26,7 @@ echo_and_run /usr/bin/env \
     CATKIN_BINARY_DIR="/home/robertslab/rl_workspace_0/build/camera_calibration" \
     "/usr/bin/python2" \
     "/home/robertslab/rl_workspace_0/src/image_pipeline/camera_calibration/setup.py" \
+     \
     build --build-base "/home/robertslab/rl_workspace_0/build/camera_calibration" \
     install \
     --root="${DESTDIR-/}" \

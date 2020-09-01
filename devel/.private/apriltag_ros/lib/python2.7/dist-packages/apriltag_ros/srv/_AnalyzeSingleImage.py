@@ -5,21 +5,21 @@ python3 = True if sys.hexversion > 0x03000000 else False
 import genpy
 import struct
 
-import std_msgs.msg
 import sensor_msgs.msg
+import std_msgs.msg
 
 class AnalyzeSingleImageRequest(genpy.Message):
   _md5sum = "ce260db7e8fcb58cbea397e93c5438a4"
   _type = "apriltag_ros/AnalyzeSingleImageRequest"
-  _has_header = False #flag to mark the presence of a Header object
-  _full_text = """
-
-
-
-
-
-
-
+  _has_header = False  # flag to mark the presence of a Header object
+  _full_text = """# Service which takes in:
+#
+#   full_path_to_image : full path to a .jpg image
+#
+# and returns:
+#
+#                 pose : the pose of the tag in the camera frame
+#  tag_detection_image : an image with the detected tag's border highlighted and payload value printed
 
 string full_path_where_to_get_image
 string full_path_where_to_save_image
@@ -216,7 +216,7 @@ bool do_rectify
     """
     if args or kwds:
       super(AnalyzeSingleImageRequest, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.full_path_where_to_get_image is None:
         self.full_path_where_to_get_image = ''
       if self.full_path_where_to_save_image is None:
@@ -356,7 +356,7 @@ bool do_rectify
       self.camera_info.roi.do_rectify = bool(self.camera_info.roi.do_rectify)
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -483,24 +483,12 @@ bool do_rectify
       self.camera_info.roi.do_rectify = bool(self.camera_info.roi.do_rectify)
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
-_struct_6IB = None
-def _get_struct_6IB():
-    global _struct_6IB
-    if _struct_6IB is None:
-        _struct_6IB = struct.Struct("<6IB")
-    return _struct_6IB
-_struct_3I = None
-def _get_struct_3I():
-    global _struct_3I
-    if _struct_3I is None:
-        _struct_3I = struct.Struct("<3I")
-    return _struct_3I
 _struct_12d = None
 def _get_struct_12d():
     global _struct_12d
@@ -513,6 +501,18 @@ def _get_struct_2I():
     if _struct_2I is None:
         _struct_2I = struct.Struct("<2I")
     return _struct_2I
+_struct_3I = None
+def _get_struct_3I():
+    global _struct_3I
+    if _struct_3I is None:
+        _struct_3I = struct.Struct("<3I")
+    return _struct_3I
+_struct_6IB = None
+def _get_struct_6IB():
+    global _struct_6IB
+    if _struct_6IB is None:
+        _struct_6IB = struct.Struct("<6IB")
+    return _struct_6IB
 _struct_9d = None
 def _get_struct_9d():
     global _struct_9d
@@ -533,7 +533,7 @@ import std_msgs.msg
 class AnalyzeSingleImageResponse(genpy.Message):
   _md5sum = "252b618af4df2baf843a5edd035f3c2c"
   _type = "apriltag_ros/AnalyzeSingleImageResponse"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """apriltag_ros/AprilTagDetectionArray tag_detections
 
 ================================================================================
@@ -633,7 +633,7 @@ float64 w
     """
     if args or kwds:
       super(AnalyzeSingleImageResponse, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.tag_detections is None:
         self.tag_detections = apriltag_ros.msg.AprilTagDetectionArray()
     else:
@@ -672,7 +672,8 @@ float64 w
         buff.write(struct.pack(pattern, *val1.size))
         _v1 = val1.pose
         _v2 = _v1.header
-        buff.write(_get_struct_I().pack(_v2.seq))
+        _x = _v2.seq
+        buff.write(_get_struct_I().pack(_x))
         _v3 = _v2.stamp
         _x = _v3
         buff.write(_get_struct_2I().pack(_x.secs, _x.nsecs))
@@ -773,7 +774,7 @@ float64 w
         self.tag_detections.detections.append(val1)
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -804,7 +805,8 @@ float64 w
         buff.write(val1.size.tostring())
         _v15 = val1.pose
         _v16 = _v15.header
-        buff.write(_get_struct_I().pack(_v16.seq))
+        _x = _v16.seq
+        buff.write(_get_struct_I().pack(_x))
         _v17 = _v16.stamp
         _x = _v17
         buff.write(_get_struct_2I().pack(_x.secs, _x.nsecs))
@@ -906,12 +908,18 @@ float64 w
         self.tag_detections.detections.append(val1)
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
+_struct_2I = None
+def _get_struct_2I():
+    global _struct_2I
+    if _struct_2I is None:
+        _struct_2I = struct.Struct("<2I")
+    return _struct_2I
 _struct_36d = None
 def _get_struct_36d():
     global _struct_36d
@@ -924,24 +932,18 @@ def _get_struct_3I():
     if _struct_3I is None:
         _struct_3I = struct.Struct("<3I")
     return _struct_3I
-_struct_4d = None
-def _get_struct_4d():
-    global _struct_4d
-    if _struct_4d is None:
-        _struct_4d = struct.Struct("<4d")
-    return _struct_4d
-_struct_2I = None
-def _get_struct_2I():
-    global _struct_2I
-    if _struct_2I is None:
-        _struct_2I = struct.Struct("<2I")
-    return _struct_2I
 _struct_3d = None
 def _get_struct_3d():
     global _struct_3d
     if _struct_3d is None:
         _struct_3d = struct.Struct("<3d")
     return _struct_3d
+_struct_4d = None
+def _get_struct_4d():
+    global _struct_4d
+    if _struct_4d is None:
+        _struct_4d = struct.Struct("<4d")
+    return _struct_4d
 class AnalyzeSingleImage(object):
   _type          = 'apriltag_ros/AnalyzeSingleImage'
   _md5sum = 'd60d994450f73cbdba772751d78c9952'

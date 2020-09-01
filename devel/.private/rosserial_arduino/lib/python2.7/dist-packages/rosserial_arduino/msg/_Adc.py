@@ -9,7 +9,7 @@ import struct
 class Adc(genpy.Message):
   _md5sum = "6d7853a614e2e821319068311f2af25b"
   _type = "rosserial_arduino/Adc"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """uint16 adc0
 uint16 adc1
 uint16 adc2
@@ -36,7 +36,7 @@ uint16 adc5
     """
     if args or kwds:
       super(Adc, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.adc0 is None:
         self.adc0 = 0
       if self.adc1 is None:
@@ -87,7 +87,7 @@ uint16 adc5
       (_x.adc0, _x.adc1, _x.adc2, _x.adc3, _x.adc4, _x.adc5,) = _get_struct_6H().unpack(str[start:end])
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -116,7 +116,7 @@ uint16 adc5
       (_x.adc0, _x.adc1, _x.adc2, _x.adc3, _x.adc4, _x.adc5,) = _get_struct_6H().unpack(str[start:end])
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():

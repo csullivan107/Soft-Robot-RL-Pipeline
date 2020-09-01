@@ -26,6 +26,7 @@ echo_and_run /usr/bin/env \
     CATKIN_BINARY_DIR="/home/robertslab/rl_workspace_0/build/rosserial_xbee" \
     "/usr/bin/python2" \
     "/home/robertslab/rl_workspace_0/src/rosserial/rosserial_xbee/setup.py" \
+     \
     build --build-base "/home/robertslab/rl_workspace_0/build/rosserial_xbee" \
     install \
     --root="${DESTDIR-/}" \

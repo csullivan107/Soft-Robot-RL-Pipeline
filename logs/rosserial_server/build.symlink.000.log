@@ -1,0 +1,7 @@
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/librosserial_server_lookup.so
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/pkgconfig/rosserial_server.pc
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/rosserial_server/serial_node
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/rosserial_server/udp_socket_node
+Symlinking /home/robertslab/rl_workspace_0/devel/lib/rosserial_server/socket_node
+Symlinking /home/robertslab/rl_workspace_0/devel/share/rosserial_server/cmake/rosserial_serverConfig.cmake
+Symlinking /home/robertslab/rl_workspace_0/devel/share/rosserial_server/cmake/rosserial_serverConfig-version.cmake

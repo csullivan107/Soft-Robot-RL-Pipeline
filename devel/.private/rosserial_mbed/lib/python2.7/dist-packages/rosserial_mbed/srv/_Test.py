@@ -9,7 +9,7 @@ import struct
 class TestRequest(genpy.Message):
   _md5sum = "39e92f1778057359c64c7b8a7d7b19de"
   _type = "rosserial_mbed/TestRequest"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """string input
 """
   __slots__ = ['input']
@@ -31,7 +31,7 @@ class TestRequest(genpy.Message):
     """
     if args or kwds:
       super(TestRequest, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.input is None:
         self.input = ''
     else:
@@ -76,7 +76,7 @@ class TestRequest(genpy.Message):
         self.input = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -114,7 +114,7 @@ class TestRequest(genpy.Message):
         self.input = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():
@@ -131,7 +131,7 @@ import struct
 class TestResponse(genpy.Message):
   _md5sum = "0825d95fdfa2c8f4bbb4e9c74bccd3fd"
   _type = "rosserial_mbed/TestResponse"
-  _has_header = False #flag to mark the presence of a Header object
+  _has_header = False  # flag to mark the presence of a Header object
   _full_text = """string output
 
 """
@@ -154,7 +154,7 @@ class TestResponse(genpy.Message):
     """
     if args or kwds:
       super(TestResponse, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.output is None:
         self.output = ''
     else:
@@ -199,7 +199,7 @@ class TestResponse(genpy.Message):
         self.output = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -237,7 +237,7 @@ class TestResponse(genpy.Message):
         self.output = str[start:end]
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():

@@ -26,6 +26,7 @@ echo_and_run /usr/bin/env \
     CATKIN_BINARY_DIR="/home/robertslab/rl_workspace_0/build/rosserial_vex_cortex" \
     "/usr/bin/python2" \
     "/home/robertslab/rl_workspace_0/src/rosserial/rosserial_vex_cortex/setup.py" \
+     \
     build --build-base "/home/robertslab/rl_workspace_0/build/rosserial_vex_cortex" \
     install \
     --root="${DESTDIR-/}" \

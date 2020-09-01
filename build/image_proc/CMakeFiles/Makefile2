@@ -1952,9 +1952,9 @@ clean: test/CMakeFiles/clean_test_results_image_proc.dir/clean
 # Target rules for target test/CMakeFiles/_run_tests_image_proc_rostest_test_test_rectify.xml.dir
 
 # All Build rule for target.
+test/CMakeFiles/_run_tests_image_proc_rostest_test_test_rectify.xml.dir/all: CMakeFiles/tests.dir/all
 test/CMakeFiles/_run_tests_image_proc_rostest_test_test_rectify.xml.dir/all: test/CMakeFiles/clean_test_results_image_proc.dir/all
 test/CMakeFiles/_run_tests_image_proc_rostest_test_test_rectify.xml.dir/all: test/CMakeFiles/image_proc_test_rectify.dir/all
-test/CMakeFiles/_run_tests_image_proc_rostest_test_test_rectify.xml.dir/all: CMakeFiles/tests.dir/all
 	$(MAKE) -f test/CMakeFiles/_run_tests_image_proc_rostest_test_test_rectify.xml.dir/build.make test/CMakeFiles/_run_tests_image_proc_rostest_test_test_rectify.xml.dir/depend
 	$(MAKE) -f test/CMakeFiles/_run_tests_image_proc_rostest_test_test_rectify.xml.dir/build.make test/CMakeFiles/_run_tests_image_proc_rostest_test_test_rectify.xml.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/robertslab/rl_workspace_0/build/image_proc/CMakeFiles --progress-num= "Built target _run_tests_image_proc_rostest_test_test_rectify.xml"

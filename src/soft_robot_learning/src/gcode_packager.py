@@ -30,17 +30,19 @@ def gcode(data):
     y_act_dist = actuator2gcode_mapping(y_perc,Y_RANGE_MIN,Y_RANGE_MAX)
     x_act_dist = int(x_act_dist)
     y_act_dist = int(y_act_dist)
+    
 
     #map readings from 0-1024 to percentages (see: calibration)
     #package message and publish it
 
     message = "G00 X" + str(x_act_dist) + " Y" + str(y_act_dist) + "\n"
+    print(message)
     pub.publish(message)
     
     
 def g_code_packager_node():
 
-    rospy.init_node('sensor_data_processing', anonymous=True)
+    rospy.init_node('gcode_packager', anonymous=True)
 
     rospy.Subscriber("/actuator_commands", gcode_packager, gcode)
 

@@ -1,3 +1,4 @@
+set(rosserial_vex_cortex_SETUP_PY_SETUP_MODULE "distutils.core")
 set(rosserial_vex_cortex_SETUP_PY_VERSION "0.8.0")
 set(rosserial_vex_cortex_SETUP_PY_SCRIPTS "")
 set(rosserial_vex_cortex_SETUP_PY_PACKAGES "rosserial_vex_cortex")

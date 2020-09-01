@@ -9,7 +9,6 @@
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/robertslab/rl_workspace_0/devel/.private/rosserial_arduino:$CMAKE_PREFIX_PATH"
 export LD_LIBRARY_PATH="/home/robertslab/rl_workspace_0/devel/.private/rosserial_arduino/lib:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="/home/robertslab/rl_workspace_0/devel/.private/rosserial_arduino/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD="/home/robertslab/rl_workspace_0/build/rosserial_arduino"
 export PYTHONPATH="/home/robertslab/rl_workspace_0/devel/.private/rosserial_arduino/lib/python2.7/dist-packages:$PYTHONPATH"
 export ROSLISP_PACKAGE_DIRECTORIES="/home/robertslab/rl_workspace_0/devel/.private/rosserial_arduino/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"

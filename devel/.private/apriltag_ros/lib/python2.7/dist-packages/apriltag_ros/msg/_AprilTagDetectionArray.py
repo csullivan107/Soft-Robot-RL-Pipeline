@@ -12,7 +12,7 @@ import std_msgs.msg
 class AprilTagDetectionArray(genpy.Message):
   _md5sum = "2b6c03434883a5c9897c13b5594dbd91"
   _type = "apriltag_ros/AprilTagDetectionArray"
-  _has_header = True #flag to mark the presence of a Header object
+  _has_header = True  # flag to mark the presence of a Header object
   _full_text = """std_msgs/Header header
 AprilTagDetection[] detections
 
@@ -108,7 +108,7 @@ float64 w
     """
     if args or kwds:
       super(AprilTagDetectionArray, self).__init__(*args, **kwds)
-      #message fields cannot be None, assign default values for those that are
+      # message fields cannot be None, assign default values for those that are
       if self.header is None:
         self.header = std_msgs.msg.Header()
       if self.detections is None:
@@ -150,7 +150,8 @@ float64 w
         buff.write(struct.pack(pattern, *val1.size))
         _v1 = val1.pose
         _v2 = _v1.header
-        buff.write(_get_struct_I().pack(_v2.seq))
+        _x = _v2.seq
+        buff.write(_get_struct_I().pack(_x))
         _v3 = _v2.stamp
         _x = _v3
         buff.write(_get_struct_2I().pack(_x.secs, _x.nsecs))
@@ -253,7 +254,7 @@ float64 w
         self.detections.append(val1)
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 
   def serialize_numpy(self, buff, numpy):
@@ -284,7 +285,8 @@ float64 w
         buff.write(val1.size.tostring())
         _v15 = val1.pose
         _v16 = _v15.header
-        buff.write(_get_struct_I().pack(_v16.seq))
+        _x = _v16.seq
+        buff.write(_get_struct_I().pack(_x))
         _v17 = _v16.stamp
         _x = _v17
         buff.write(_get_struct_2I().pack(_x.secs, _x.nsecs))
@@ -388,12 +390,18 @@ float64 w
         self.detections.append(val1)
       return self
     except struct.error as e:
-      raise genpy.DeserializationError(e) #most likely buffer underfill
+      raise genpy.DeserializationError(e)  # most likely buffer underfill
 
 _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
+_struct_2I = None
+def _get_struct_2I():
+    global _struct_2I
+    if _struct_2I is None:
+        _struct_2I = struct.Struct("<2I")
+    return _struct_2I
 _struct_36d = None
 def _get_struct_36d():
     global _struct_36d
@@ -406,21 +414,15 @@ def _get_struct_3I():
     if _struct_3I is None:
         _struct_3I = struct.Struct("<3I")
     return _struct_3I
-_struct_4d = None
-def _get_struct_4d():
-    global _struct_4d
-    if _struct_4d is None:
-        _struct_4d = struct.Struct("<4d")
-    return _struct_4d
-_struct_2I = None
-def _get_struct_2I():
-    global _struct_2I
-    if _struct_2I is None:
-        _struct_2I = struct.Struct("<2I")
-    return _struct_2I
 _struct_3d = None
 def _get_struct_3d():
     global _struct_3d
     if _struct_3d is None:
         _struct_3d = struct.Struct("<3d")
     return _struct_3d
+_struct_4d = None
+def _get_struct_4d():
+    global _struct_4d
+    if _struct_4d is None:
+        _struct_4d = struct.Struct("<4d")
+    return _struct_4d

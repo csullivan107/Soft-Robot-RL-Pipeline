@@ -7,15 +7,15 @@
 	<arg name="cam_name" default="RL_cam" />
 	<arg name="camera_calibration_info" default="file:///home/robertslab/.ros/camera_info/RL_cam.yaml" />
 	<arg name="image_arg" default="/usb_cam/image_raw" />
-	<arg name="xSensorMax" default="838" />
-	<arg name="xSensorMin" default="710" />
-	<arg name="ySensorMax" default="855" />
-	<arg name="ySensorMin" default="705" />
-	<arg name="xTravelMax" default="110" />
-	<arg name="xTravelMin" default="0" />
-	<arg name="yTravelMax" default="110" />
-	<arg name="yTravelMin" default="0" />
-
+	<arg name="xSensorMax" default="610" />
+	<arg name="xSensorMin" default="490" />
+	<arg name="ySensorMax" default="645" />
+	<arg name="ySensorMin" default="520" />
+	<arg name="xTravelMax" default="60" />
+	<arg name="xTravelMin" default="15" />
+	<arg name="yTravelMax" default="50" />
+	<arg name="yTravelMin" default="15" />
+	<!-- Travel ranges are taken from calibration data and relative to desired linear readings on sensors -->
 
 	<!-- Set parameters using the arguments  -->
 	
