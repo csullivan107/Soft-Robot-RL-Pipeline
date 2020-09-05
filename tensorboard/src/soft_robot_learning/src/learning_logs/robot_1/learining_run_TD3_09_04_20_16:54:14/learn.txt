@@ -1,0 +1,160 @@
+---------------------| Total Steps: 0 | Episode: 0 | Episode Step: 0 |-----------------------
+	Command Generated	| 	    xCmd: 21.159 	    yCmd: 32.508
+	State Information	| 	  xState:  0.000 	  yState:  0.000
+	                 	| 	  xSPrev:  0.000 	  ySPrev:  0.000
+	Position Information	| 	    xPos:  2.493 	    yPos: 44.896
+	                    	| 	xPosPrev:  0.000 	yPosPrev:  0.000
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  0.480
+---------------------| Total Steps: 1 | Episode: 0 | Episode Step: 1 |-----------------------
+	Command Generated	| 	    xCmd: 79.687 	    yCmd:  1.479
+	State Information	| 	  xState:  0.000 	  yState:  0.000
+	                 	| 	  xSPrev:  0.000 	  ySPrev:  0.000
+	Position Information	| 	    xPos:  2.683 	    yPos: 44.921
+	                    	| 	xPosPrev:  2.493 	yPosPrev: 44.896
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  0.024
+---------------------| Total Steps: 2 | Episode: 0 | Episode Step: 2 |-----------------------
+	Command Generated	| 	    xCmd: 64.597 	    yCmd: 77.201
+	State Information	| 	  xState: 83.333 	  yState: 77.600
+	                 	| 	  xSPrev:  0.000 	  ySPrev:  0.000
+	Position Information	| 	    xPos:  1.841 	    yPos: 41.921
+	                    	| 	xPosPrev:  2.683 	yPosPrev: 44.921
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward: -3.000
+---------------------| Total Steps: 3 | Episode: 0 | Episode Step: 3 |-----------------------
+	Command Generated	| 	    xCmd: 58.992 	    yCmd: 97.111
+	State Information	| 	  xState: 80.000 	  yState: 100.000
+	                 	| 	  xSPrev: 83.333 	  ySPrev: 77.600
+	Position Information	| 	    xPos:  1.174 	    yPos: 42.028
+	                    	| 	xPosPrev:  1.841 	yPosPrev: 41.921
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  0.107
+---------------------| Total Steps: 4 | Episode: 0 | Episode Step: 4 |-----------------------
+	Command Generated	| 	    xCmd: 55.623 	    yCmd: 80.435
+	State Information	| 	  xState: 79.167 	  yState: 96.000
+	                 	| 	  xSPrev: 80.000 	  ySPrev: 100.000
+	Position Information	| 	    xPos:  1.261 	    yPos: 42.270
+	                    	| 	xPosPrev:  1.174 	yPosPrev: 42.028
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  0.242
+---------------------| Total Steps: 5 | Episode: 0 | Episode Step: 5 |-----------------------
+	Command Generated	| 	    xCmd: 37.501 	    yCmd: 87.133
+	State Information	| 	  xState: 63.333 	  yState: 96.800
+	                 	| 	  xSPrev: 79.167 	  ySPrev: 96.000
+	Position Information	| 	    xPos:  0.735 	    yPos: 42.725
+	                    	| 	xPosPrev:  1.261 	yPosPrev: 42.270
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  0.455
+---------------------| Total Steps: 6 | Episode: 0 | Episode Step: 6 |-----------------------
+	Command Generated	| 	    xCmd: 48.437 	    yCmd: 98.542
+	State Information	| 	  xState: 69.167 	  yState: 100.000
+	                 	| 	  xSPrev: 63.333 	  ySPrev: 96.800
+	Position Information	| 	    xPos:  0.833 	    yPos: 42.525
+	                    	| 	xPosPrev:  0.735 	yPosPrev: 42.725
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward: -0.200
+---------------------| Total Steps: 7 | Episode: 0 | Episode Step: 7 |-----------------------
+	Command Generated	| 	    xCmd: 60.685 	    yCmd: 23.490
+	State Information	| 	  xState: 79.167 	  yState: 46.400
+	                 	| 	  xSPrev: 69.167 	  ySPrev: 100.000
+	Position Information	| 	    xPos:  2.724 	    yPos: 43.929
+	                    	| 	xPosPrev:  0.833 	yPosPrev: 42.525
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  1.404
+---------------------| Total Steps: 8 | Episode: 0 | Episode Step: 8 |-----------------------
+	Command Generated	| 	    xCmd: 27.652 	    yCmd: 83.328
+	State Information	| 	  xState: 51.667 	  yState: 96.000
+	                 	| 	  xSPrev: 79.167 	  ySPrev: 46.400
+	Position Information	| 	    xPos:  0.301 	    yPos: 43.425
+	                    	| 	xPosPrev:  2.724 	yPosPrev: 43.929
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward: -0.504
+---------------------| Total Steps: 9 | Episode: 0 | Episode Step: 9 |-----------------------
+	Command Generated	| 	    xCmd: 31.969 	    yCmd: 23.622
+	State Information	| 	  xState: 51.667 	  yState: 43.200
+	                 	| 	  xSPrev: 51.667 	  ySPrev: 96.000
+	Position Information	| 	    xPos:  1.675 	    yPos: 44.858
+	                    	| 	xPosPrev:  0.301 	yPosPrev: 43.425
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  1.432
+---------------------| Total Steps: 10 | Episode: 0 | Episode Step: 10 |-----------------------
+	Command Generated	| 	    xCmd: 37.175 	    yCmd: 92.318
+	State Information	| 	  xState: 55.833 	  yState: 100.000
+	                 	| 	  xSPrev: 51.667 	  ySPrev: 43.200
+	Position Information	| 	    xPos:  0.328 	    yPos: 43.061
+	                    	| 	xPosPrev:  1.675 	yPosPrev: 44.858
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward: -1.797
+---------------------| Total Steps: 11 | Episode: 0 | Episode Step: 11 |-----------------------
+	Command Generated	| 	    xCmd: 73.440 	    yCmd:  8.101
+	State Information	| 	  xState: 90.000 	  yState: 27.200
+	                 	| 	  xSPrev: 55.833 	  ySPrev: 100.000
+	Position Information	| 	    xPos:  3.947 	    yPos: 44.044
+	                    	| 	xPosPrev:  0.328 	yPosPrev: 43.061
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  0.983
+---------------------| Total Steps: 12 | Episode: 0 | Episode Step: 12 |-----------------------
+	Command Generated	| 	    xCmd:  8.182 	    yCmd: 62.223
+	State Information	| 	  xState: 31.667 	  yState: 71.200
+	                 	| 	  xSPrev: 90.000 	  ySPrev: 27.200
+	Position Information	| 	    xPos:  0.423 	    yPos: 44.959
+	                    	| 	xPosPrev:  3.947 	yPosPrev: 44.044
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  0.915
+---------------------| Total Steps: 13 | Episode: 0 | Episode Step: 13 |-----------------------
+	Command Generated	| 	    xCmd: 91.951 	    yCmd: 59.736
+	State Information	| 	  xState: 98.333 	  yState: 86.400
+	                 	| 	  xSPrev: 31.667 	  ySPrev: 71.200
+	Position Information	| 	    xPos:  1.691 	    yPos: 43.048
+	                    	| 	xPosPrev:  0.423 	yPosPrev: 44.959
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward: -1.911
+---------------------| Total Steps: 14 | Episode: 0 | Episode Step: 14 |-----------------------
+	Command Generated	| 	    xCmd: 78.413 	    yCmd: 21.564
+	State Information	| 	  xState: 95.833 	  yState: 48.000
+	                 	| 	  xSPrev: 98.333 	  ySPrev: 86.400
+	Position Information	| 	    xPos:  2.962 	    yPos: 44.469
+	                    	| 	xPosPrev:  1.691 	yPosPrev: 43.048
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  1.421
+---------------------| Total Steps: 15 | Episode: 0 | Episode Step: 15 |-----------------------
+	Command Generated	| 	    xCmd: 45.372 	    yCmd: 71.325
+	State Information	| 	  xState: 75.833 	  yState: 92.800
+	                 	| 	  xSPrev: 95.833 	  ySPrev: 48.000
+	Position Information	| 	    xPos:  0.819 	    yPos: 43.765
+	                    	| 	xPosPrev:  2.962 	yPosPrev: 44.469
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward: -0.704
+---------------------| Total Steps: 16 | Episode: 0 | Episode Step: 16 |-----------------------
+	Command Generated	| 	    xCmd: 95.347 	    yCmd: 98.870
+	State Information	| 	  xState: 73.333 	  yState: 92.000
+	                 	| 	  xSPrev: 75.833 	  ySPrev: 92.800
+	Position Information	| 	    xPos:  0.769 	    yPos: 43.792
+	                    	| 	xPosPrev:  0.819 	yPosPrev: 43.765
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  0.000
+---------------------| Total Steps: 17 | Episode: 0 | Episode Step: 17 |-----------------------
+	Command Generated	| 	    xCmd: 96.605 	    yCmd: 100.000
+	State Information	| 	  xState: 73.333 	  yState: 92.000
+	                 	| 	  xSPrev: 73.333 	  ySPrev: 92.000
+	Position Information	| 	    xPos:  0.769 	    yPos: 43.792
+	                    	| 	xPosPrev:  0.769 	yPosPrev: 43.792
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  0.000
+---------------------| Total Steps: 18 | Episode: 0 | Episode Step: 18 |-----------------------
+	Command Generated	| 	    xCmd: 95.002 	    yCmd: 100.000
+	State Information	| 	  xState: 73.333 	  yState: 92.000
+	                 	| 	  xSPrev: 73.333 	  ySPrev: 92.000
+	Position Information	| 	    xPos:  0.769 	    yPos: 43.792
+	                    	| 	xPosPrev:  0.769 	yPosPrev: 43.792
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  0.000
+---------------------| Total Steps: 19 | Episode: 0 | Episode Step: 19 |-----------------------
+	Command Generated	| 	    xCmd: 94.248 	    yCmd: 99.929
+	State Information	| 	  xState: 73.333 	  yState: 92.000
+	                 	| 	  xSPrev: 73.333 	  ySPrev: 92.000
+	Position Information	| 	    xPos:  0.769 	    yPos: 43.792
+	                    	| 	xPosPrev:  0.769 	yPosPrev: 43.792
+	                    	| 	   xZero:  1.929 	   yZero: 44.416
+	Reward Information  	| 	  Reward:  0.000

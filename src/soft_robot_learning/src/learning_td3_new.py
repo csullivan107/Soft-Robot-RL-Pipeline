@@ -13,8 +13,9 @@ import pprint
 #import necessary stable baselines TD3 libraries for learning purposes
 from stable_baselines import TD3
 from stable_baselines.td3.policies import MlpPolicy as Td3MlpPolicy
-from stable_baselines.ddpg.noise import OrnsteinUhlenbeckActionNoise
+from stable_baselines.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise, AdaptiveParamNoiseSpec
 from stable_baselines.common.vec_env import DummyVecEnv
+from stable_baselines.common.callbacks import CallbackList, CheckpointCallback, EvalCallback, EveryNTimesteps, BaseCallback
 #import ROS specific libraries and custom message types
 import rospy
 from std_msgs.msg import String
@@ -43,25 +44,26 @@ xZero = 0. #zero values for each episode
 yZero = 0.
 
 action_done = False
+action_done_flag = False
 
 #define constants
 NUM_STEPS_EPISODE = 24 #index at 0 - (desirednum - 1)
-TOTAL_STEPS = 10000
+TOTAL_STEPS = 3000
 TIME_PER_STEP = 1 #this could be variable depending on hardware
 robotName = "robot_1"
 NOISE_CONSTANT = .03 #how do i update this inside the TD3.learn function
 #just going to put this at a rate large enough taht we liikkely wont get hardware hangups
 
 #here are the constants for the TD3 Model
-GAMMA = 0.9
-LEARNING_RATE = .1
+GAMMA = 0.99
+LEARNING_RATE = .003
 BUFFER_SIZE = 50000
-LEARNING_STARTS = 50
-TRAIN_FREQ = 100
-GRADIENT_STEPS = 100
-BATCH_SIZE = 64
+LEARNING_STARTS = 500
+GRADIENT_STEPS = 1
+BATCH_SIZE = 32
+TRAIN_FREQ = 1
 TAU = .005
-POLICY_DELAY = 16
+POLICY_DELAY = 2
 # ACTION_NOISE = None | this is set later when you build the noise generator
 TARGET_POLICY_NOISE = 0.2
 TARGET_NOISE_CLIP = 0.5
@@ -91,6 +93,7 @@ else:
 file = open(os.path.join(dirName, "learn.txt"), "w")
 file.close()
 
+
 # define ROS publisher nodes
 cmd_pub = rospy.Publisher('/actuator_commands', gcode_packager, queue_size = 30)
 direct_cmd_publisher = rospy.Publisher('/grbl_commands', String, queue_size = 30)
@@ -111,8 +114,8 @@ def robot_state_callback(data):
 def gnd_truth_callback(data):
 	#print("updating Ground Truth Data")
 	global xPos_global, yPos_global
-	xPos_global = data.x_pos_gnd
-	yPos_global = data.y_pos_gnd
+	xPos_global = data.x_pos_gnd*1000
+	yPos_global = data.y_pos_gnd*1000
 	#print("x position: {}", format(xPosition))
 	#print("y position: {}", format(yPosition))
 
@@ -145,19 +148,29 @@ def rewardCalculation(x_current, y_current, x_startstep, y_startstep):
 	xDist = x_current - x_startstep
 	yDist = y_current - y_startstep
 
-	reward = yDist*1000
+	reward = yDist
 
 	return reward
 
-def wait_for_action():
+def wait_for_action(is_homing):
 	global action_done
 	count = 0
+	timeout = 10 #seconds
+	if is_homing:
+		timeout = 20
+	start = time.time()
 	while not action_done:
 		count = count + 1
-		#print(action_done)
+		# Sometimes if the commands are too close the system completes the action so fast the system doesnt get
+		# a chance to register it. no action should take more than 10 seconds so if greater than that assume the 
+		# action is done
+		if ((time.time()-start) > timeout): #this is 10 seconds
+			action_done = True
+		
+		
 		
 	print("\t--Action Complete--\t|")
-	time.sleep(1)
+	time.sleep(1) #this ensures things tont compute too quickly and action done works for the rest of the episode meaning only one action complete
 
 def screenCmdData(generated, xPrev, yPrev):
 	global step_count
@@ -202,10 +215,17 @@ def screenCmdData(generated, xPrev, yPrev):
 def homeGrblController():
 	print("Homing System....")
 	direct_cmd_publisher.publish('$H')
-	wait_for_action()
+	wait_for_action(True)
 	time.sleep(.5)
 	direct_cmd_publisher.publish('G92 X0 Y0')
-	print("Homing Complete")
+	print("Homing Complete - moving to robot 0 state")
+	# cmd_message = gcode_packager()
+	#publish action
+	# cmd_message.x_percentage = 0.
+	# cmd_message.y_percentage = 0.
+	# # time.sleep(1)
+	# cmd_pub.publish(cmd_message)
+	# wait_for_action(False)
 
 def initGrblController():
 	print("Initializing Grbl System...")
@@ -265,7 +285,11 @@ class soft_learner():
 		#initialize proper spaces and metadata 
 		#both the action and state space are bounded by 0-100 for %of actuation
 		#mapping these to real world actiona dnnand sensors are handeled in another script
-		self.observation_space = spaces.Box(low=np.array([0.,0.]), high=np.array([100.,100.])) #obs space = continuous, 
+		# self.observation_space = spaces.Box(low=np.array([0.,0.]), high=np.array([100.,100.])) #obs space = continuous, 
+		
+		#remapping observations -1 to 1 so debug "convergence problem"
+		self.observation_space = spaces.Box(low=np.array([-1.,-1.]), high=np.array([1.,1.])) #obs space = continuous, 
+
 		self.action_space = spaces.Box(low=np.array([0.,0.]), high=np.array([100.,100.]))
 		
 		self.metadata = 0
@@ -305,8 +329,11 @@ class soft_learner():
 		self.xZero = xPos_global
 		self.yZero = yPos_global
 
+		xReturn = self.x/50-1
+		yReturn = self.y/50-1
+
 		#run calibration function here
-		return self.x, self.y
+		return xReturn, yReturn
 
 	def step(self, generated_cmd_array):
 		
@@ -327,26 +354,35 @@ class soft_learner():
 		cmd_message = gcode_packager()
 		
 		#preprocess generated commands to make sure they are sufficiently far enough away from last command to not freeze system and within 0-100
-		screened_cmd_array = screenCmdData(generated_cmd_array, self.xCmdPrev, self.yCmdPrev)
-		self.xCmd = screened_cmd_array[0]
-		self.yCmd = screened_cmd_array[1]
+		# screened_cmd_array = screenCmdData(generated_cmd_array, self.xCmdPrev, self.yCmdPrev)
+		# self.xCmd = screened_cmd_array[0]
+		# self.yCmd = screened_cmd_array[1]
 
-		# self.xCmd = generated_cmd_array[0]
-		# self.yCmd = generated_cmd_array[1]
+		self.xCmd = generated_cmd_array[0]
+		self.yCmd = generated_cmd_array[1]
 		print("\tCommand Generated\t| \t    xCmd: %6.3f \t    yCmd: %6.3f" %(self.xCmd, self.yCmd))
 		self.log_file.write("\tCommand Generated\t| \t    xCmd: %6.3f \t    yCmd: %6.3f\n" %(self.xCmd, self.yCmd))
 		#publish action
 		cmd_message.x_percentage = self.xCmd
 		cmd_message.y_percentage = self.yCmd
+		# time.sleep(1)
 		cmd_pub.publish(cmd_message)
+		print("\t--Command Sent   --\t|")
+		
+		
 
 		#wait for hardware to complete action
-		wait_for_action()
-
+		wait_for_action(False)
+		# print("\t--Action Complete--\t|")
+		# print("\t--Done waiting   --\t|")
+		
 		#subscribe/read state
 		self.state = [xState_global, yState_global]
+		# print("\t--state data got --\t|")
 		self.xState = self.state[0]
+		# print("\t--state 0 set    --\t|")
 		self.yState = self.state[1]
+		# print("\t--state 1 set    --\t|")
 		print("\tState Information\t| \t  xState: %6.3f \t  yState: %6.3f" %(self.xState, self.yState))
 		print("\t                 \t| \t  xSPrev: %6.3f \t  ySPrev: %6.3f" %(self.xStatePrev, self.yStatePrev))
 		self.log_file.write("\tState Information\t| \t  xState: %6.3f \t  yState: %6.3f\n" %(self.xState, self.yState))
@@ -391,8 +427,107 @@ class soft_learner():
 		done = self.n_steps > NUM_STEPS_EPISODE
 
 		self.log_file.close()
+		
+		left_data = open(os.path.join(dirName,"left_data.txt"), "a")
+		left_data.write(str(self.xCmd) + '\n')
+		left_data.close()
+		right_data = open(os.path.join(dirName,"right_data.txt"),"a")
+		right_data.write(str(self.yCmd) + '\n')
+		right_data.close()
 
+		#remap states from -1 to 1 - this was after much debugging
+		self.state[0] = (self.state[0]/50)-1
+		self.state[1] = (self.state[1]/50)-1
 		return self.state, self.reward, done, {}
+
+
+class customCallback(BaseCallback):
+	"""
+	A custom callback that derives from ``BaseCallback``.
+
+	:param verbose: (int) Verbosity level 0: not output 1: info 2: debug
+	"""
+
+	def __init__(self, verbose=0):
+		super(customCallback, self).__init__(verbose)
+		# Those variables will be accessible in the callback
+		# (they are defined in the base class)
+		# The RL model
+		# self.model = None  # type: BaseRLModel
+		# An alias for self.model.get_env(), the environment used for training
+		# self.training_env = None  # type: Union[gym.Env, VecEnv, None]
+		# Number of time the callback was called
+		# self.n_calls = 0  # type: int
+		# self.num_timesteps = 0  # type: int
+		# local and global variables
+		# self.locals = None  # type: Dict[str, Any]
+		# self.globals = None  # type: Dict[str, Any]
+		# The logger object, used to report things in the terminal
+		# self.logger = None  # type: logger.Logger
+		# # Sometimes, for event callback, it is useful
+		# # to have access to the parent object
+		# self.parent = None  # type: Optional[BaseCallback]
+		self.startTime = None
+		self.endTime = None
+
+	def _on_training_start(self) -> None:
+		"""
+		This method is called before the first rollout starts.
+		"""
+		self.startTime = time.time()
+		print("Begin training")
+		pass
+
+	def _on_rollout_start(self) -> None:
+		"""
+		A rollout is the collection of environment interaction
+		using the current policy.
+		This event is triggered before collecting new samples.
+
+		"""
+
+		print("\t--Rollout Strt   --\t|")
+		pass
+
+	def _on_step(self) -> bool:
+		"""
+		This method will be called by the model after each call to `env.step()`.
+
+		For child callback (of an `EventCallback`), this will be called
+		when the event is triggered.
+
+		:return: (bool) If the callback returns False, training is aborted early.
+		"""
+		if self.num_timesteps % 100:
+			t = time.time()
+			time_elapsed = t-self.startTime #seconds
+		print("\t--Step Done      --\t|")
+		if yPos_global > 200:
+			input("Please reset the robot to start and press enter key to continue..")
+
+		return True
+
+	def _on_rollout_end(self) -> None:
+		"""
+		This event is triggered before updating the policy.
+		"""
+		print("\t--Updte Ploicy   --\t|")
+
+		pass
+
+	def _on_training_end(self) -> None:
+		"""
+		This event is triggered before exiting the `learn()` method.
+		"""
+		self.endTime = time.time()
+		time_elapsed = (self.endTime - self.startTime)/60 #minutes
+		avg = self.num_timesteps/time_elapsed
+		print("\t--Train Complt   --\t|")
+		print("\t elapsed time: " + str(time_elapsed) + " min\tavg tiem/step: " + str(avg) + " sec")
+		pass
+
+# Use deterministic actions for evaluation
+
 
 
 if __name__ == '__main__':
@@ -411,8 +546,10 @@ if __name__ == '__main__':
 	
 
 	a_dim = env.action_space.shape[0]
-	td3_noise = OrnsteinUhlenbeckActionNoise(np.zeros(a_dim), NOISE_CONSTANT*np.ones(a_dim)) 
+	# td3_noise = OrnsteinUhlenbeckActionNoise(np.zeros(a_dim), .9*np.ones(a_dim)) 
+	td3_noise = NormalActionNoise(0,.75)
 	td3_env = DummyVecEnv([lambda: env])
+	# td3_env = env
 
 	td3_model = TD3(Td3MlpPolicy, td3_env,
 					gamma = GAMMA,
@@ -436,24 +573,49 @@ if __name__ == '__main__':
 					seed = SEED,
 					n_cpu_tf_sess = N_CPU_TF_SESS)
 
-	env.reset()
+	#every x episodes fun the model for y amount of episodes and evaluate it
+	eval_callback = EvalCallback(td3_env, best_model_save_path='./logs/',
+                             log_path='./logs/', eval_freq=100,
+                             deterministic=True, render=False)
 
-	pp.pprint(td3_model.get_parameter_list())
+	checkpoint_callback = CheckpointCallback(save_freq=100, save_path= dirName,
+                                         name_prefix='rl_model')
 
-	for i in range(int(TOTAL_STEPS/10)):
-		td3_model.learn(total_timesteps=int(TOTAL_STEPS/10))
-		td3_model.save("td3_model")
-		print('++++++++++++++ Saving TD3 model | '+ str((TOTAL_STEPS/10)) + ' Steps Completed ++++++++++++++++')
-		if i == 5:
-			print ("add order of magnitude to learning rate")
-			new_rate = LEARNING_RATE/10
-			td3_model.learning_rate = new_rate
-			print ("turning off learning starts")
-			td3_model.learning_starts = 0
-		if i == 8:
-			print ("add order of magnitude to learning rate")
-			new_rate = LEARNING_RATE/100
-			td3_model.learning_rate = new_rate
+	# td3_model.learning_starts = 100
+	
+	custom_callback = customCallback(verbose=0)
+	callback = CallbackList([custom_callback, checkpoint_callback])
+	td3_model.learn(total_timesteps = TOTAL_STEPS, callback=callback)
+	td3_model.save("td3_model_int_test")
+
+	# for i in range(10):
+	# 	td3_model.learn(total_timesteps = 10, _init_setup_model = False)
+		
+	# 	td3_model.learning_starts = 0
+	# 	if yPos_global > 200:
+	# 		input("Please reset the robot to start and press enter key to continue..")
+	
+
+	#only 100 steps showed up in the final taensorboard. i think it has to do with the for loop. doing a thouand steps
+
+	# for i in range(10):
+		
+		
+	# 	print('++++++++++++++ Saving TD3 model | 100 Steps Completed ++++++++++++++++')
+	# 	if i == 5:
+	# 		print ("add order of magnitude to learning rate and redurce noise constant")
+	# 		new_rate = LEARNING_RATE/10
+	# 		td3_model.learning_rate = new_rate
+	# 		# td3_model.noise = NormalActionNoise(0,.6)
+	# 		td3_model.action_noise = OrnsteinUhlenbeckActionNoise(np.zeros(a_dim), .6*np.ones(a_dim)) 
+	# 		# print ("turning off learning starts")
+	# 		# td3_model.learning_starts = 0
+	# 	if i == 8:
+	# 		print ("add order of magnitude to learning rate and reduce noise constant")
+	# 		new_rate = LEARNING_RATE/100
+	# 		td3_model.learning_rate = new_rate
+	# 		# td3_model.noise = NormalActionNoise(0,.3)
+	# 		td3_model.action_noise = OrnsteinUhlenbeckActionNoise(np.zeros(a_dim), .3*np.ones(a_dim)) 
 
 	print("learning complete")
 

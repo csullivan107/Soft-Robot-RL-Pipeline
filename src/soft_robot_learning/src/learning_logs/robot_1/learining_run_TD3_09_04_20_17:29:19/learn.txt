@@ -1,0 +1,8 @@
+---------------------| Total Steps: 0 | Episode: 0 | Episode Step: 0 |-----------------------
+	Command Generated	| 	    xCmd: 47.446 	    yCmd: 51.379
+	State Information	| 	  xState: 52.500 	  yState: 54.400
+	                 	| 	  xSPrev:  0.000 	  ySPrev:  0.000
+	Position Information	| 	    xPos:  1.215 	    yPos: 45.511
+	                    	| 	xPosPrev:  0.000 	yPosPrev:  0.000
+	                    	| 	   xZero:  1.155 	   yZero: 49.624
+	Reward Information  	| 	  Reward: -4.113
